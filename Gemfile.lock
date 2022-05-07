@@ -209,7 +209,7 @@ DEPENDENCIES
   devise (~> 4.8.1)
   devise-jwt (~> 0.9.0)
   factory_bot_rails (~> 6.2.0)
-  jsonapi-serializer
+  jsonapi-serializer (~> 2.2.0)
   listen (~> 3.3)
   pg (~> 1.1)
   puma (~> 5.0)
