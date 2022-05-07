@@ -27,6 +27,7 @@ gem 'rack-cors'
 
 gem 'devise', '~> 4.8.1'
 gem 'devise-jwt', '~> 0.9.0'
+gem 'jsonapi-serializer', '~> 2.2.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
