@@ -12,6 +12,7 @@ class ApplicationController < ActionController::API
 
   protected
 
+  # Additional strong parameters for User Devise
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name contact_number city region role])
   end

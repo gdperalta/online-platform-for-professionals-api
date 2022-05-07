@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
+  resources :professionals do
+    resources :reviews
+  end
   devise_for :users,
              defaults: { format: :json },
              path: '',
              path_names: {
-               sign_in: '/api/login',
-               sign_out: '/api/logout',
-               registration: '/api/signup'
+               sign_in: '/login',
+               sign_out: '/logout',
+               registration: '/signup'
              },
              controllers: {
                sessions: 'users/sessions',
