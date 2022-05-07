@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :professionals
+  resources :professionals do
+    resources :reviews
+  end
   devise_for :users,
              defaults: { format: :json },
              path: '',
