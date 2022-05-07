@@ -5,32 +5,31 @@ class ProfessionalsController < ApplicationController
   def index
     @professionals = Professional.all
 
-    # render json: @professionals
     render json: ProfessionalSerializer.new(@professionals)
   end
 
   # GET /professionals/1
   def show
-    render json: @professional
+    render json: ProfessionalSerializer.new(@professional)
   end
 
   # POST /professionals
-  def create
-    @professional = Professional.new(professional_params)
+  # def create
+  #   @professional = Professional.new(professional_params)
 
-    if @professional.save
-      render json: @professional, status: :created, location: @professional
-    else
-      render json: @professional.errors, status: :unprocessable_entity
-    end
-  end
+  #   if @professional.save
+  #     render json: @professional, status: :created, location: @professional
+  #   else
+  #     render json: @professional.errors, status: :unprocessable_entity
+  #   end
+  # end
 
   # PATCH/PUT /professionals/1
   def update
     if @professional.update(professional_params)
-      render json: @professional
+      render json: ProfessionalSerializer.new(@professional)
     else
-      render json: @professional.errors, status: :unprocessable_entity
+      render json: ProfessionalSerializer.new(@professional.errors), status: :unprocessable_entity
     end
   end
 
