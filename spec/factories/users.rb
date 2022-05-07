@@ -11,10 +11,15 @@ FactoryBot.define do
       id { 1 }
       email { 'pro@email.com' }
       role { 'professional' }
+    end
+
+    trait :client do
+      id { 2 }
+      email { 'client@email.com' }
+      role { 'client' }
 
       before(:create) do |user|
-        user.build_professional(field: 'Electrical Engineer',
-                                license_number: '0012345')
+        user.build_client(id: 2)
       end
     end
   end
