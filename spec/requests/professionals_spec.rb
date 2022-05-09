@@ -42,39 +42,58 @@ RSpec.describe '/professionals', type: :request do
     end
   end
 
-  # describe 'POST /create' do
-  #   context 'with valid parameters' do
-  #     it 'creates a new Professional' do
-  #       expect do
-  #         post professionals_url,
-  #              params: { professional: valid_attributes }, headers: valid_headers, as: :json
-  #       end.to change(Professional, :count).by(1)
-  #     end
+  describe 'POST /create' do
+    let!(:user) { create(:user, :no_association) }
+    let(:valid_headers) do
+      post '/login', params: { user: { email: 'test@email.com', password: 'password' } }
+      { 'Accept': 'application/json', 'Authorization': response.headers['Authorization'] }
+    end
+    let(:valid_attributes) do
+      { field: 'Programmer', license_number: '0098765', headline: 'New Headline', office_address: 'New Address' }
+    end
+    context 'with valid parameters' do
+      it 'creates a new Professional' do
+        expect do
+          post professionals_url,
+               params: { professional: valid_attributes }, headers: valid_headers, as: :json
+        end.to change(Professional, :count).by(1)
+      end
 
-  #     it 'renders a JSON response with the new professional' do
-  #       post professionals_url,
-  #            params: { professional: valid_attributes }, headers: valid_headers, as: :json
-  #       expect(response).to have_http_status(:created)
-  #       expect(response.content_type).to match(a_string_including('application/json'))
-  #     end
-  # end
+      it 'renders a JSON response with the new professional' do
+        post professionals_url,
+             params: { professional: valid_attributes }, headers: valid_headers, as: :json
+        data = response.parsed_body['data']
+        attributes = response.parsed_body['data']['attributes']
 
-  #   context 'with invalid parameters' do
-  #     it 'does not create a new Professional' do
-  #       expect do
-  #         post professionals_url,
-  #              params: { professional: invalid_attributes }, as: :json
-  #       end.to change(Professional, :count).by(0)
-  #     end
+        expect(response).to have_http_status(:created)
+        expect(response.content_type).to match(a_string_including('application/json'))
 
-  #     it 'renders a JSON response with errors for the new professional' do
-  #       post professionals_url,
-  #            params: { professional: invalid_attributes }, headers: valid_headers, as: :json
-  #       expect(response).to have_http_status(:unprocessable_entity)
-  #       expect(response.content_type).to match(a_string_including('application/json'))
-  #     end
-  #   end
-  # end
+        expect(response).to be_successful
+        expect(data).to include('id')
+        expect(data).to include('attributes')
+        expect(attributes).to include('field' => 'Programmer',
+                                      'licenseNumber' => '0098765',
+                                      'headline' => 'New Headline',
+                                      'officeAddress' => 'New Address')
+      end
+    end
+
+    #   context 'with invalid parameters' do
+    #     it 'does not create a new Professional' do
+    #       expect do
+    #         post professionals_url,
+    #              params: { professional: invalid_attributes }, as: :json
+    #       end.to change(Professional, :count).by(0)
+    #     end
+
+    #     it 'renders a JSON response with errors for the new professional' do
+    #       post professionals_url,
+    #            params: { professional: invalid_attributes }, headers: valid_headers, as: :json
+    #       expect(response).to have_http_status(:unprocessable_entity)
+    #       expect(response.content_type).to match(a_string_including('application/json'))
+    #     end
+    #   end
+  end
 
   describe 'PATCH /update' do
     context 'with valid parameters' do
