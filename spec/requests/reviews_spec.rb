@@ -1,17 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe '/reviews', type: :request do
+  let!(:professional) { create(:professional) }
+  let!(:client) { create(:user, :client).client }
+
   let(:valid_attributes) do
-    attributes_for(:review)
+    { professional_id: 1, client_id: client.id, rating: 3, body: 'My review' }
   end
 
   # let(:invalid_attributes) do
   #   skip('Add a hash of attributes invalid for your model')
   # end
-  let!(:client) { create(:user, :client) }
-  let!(:professional) { create(:professional, :with_reviews) }
+
   let(:valid_headers) do
-    post '/login', params: { user: { email: 'pro@email.com', password: 'password' } }
+    post '/login', params: { user: { email: 'client@email.com', password: 'password' } }
     { 'Accept': 'application/json', 'Authorization': response.headers['Authorization'] }
   end
 
@@ -31,12 +33,15 @@ RSpec.describe '/reviews', type: :request do
       get professional_review_url(professional, professional.reviews.first), headers: valid_headers, as: :json
       data = response.parsed_body['data']
       attributes = response.parsed_body['data']['attributes']
+      relationships = response.parsed_body['data']['relationships']
 
       expect(response).to be_successful
       expect(data).to include('id')
       expect(data).to include('attributes')
       expect(attributes).to include('rating' => 3,
                                     'body' => 'My review')
+      expect(relationships).to include('professional',
+                                       'client')
     end
   end
 
@@ -88,7 +93,7 @@ RSpec.describe '/reviews', type: :request do
       end
 
       it 'updates the requested review' do
-        review = professional.reviews.last
+        review = client.reviews.last
         patch professional_review_url(professional, review),
               params: { review: new_attributes }, headers: valid_headers, as: :json
         review.reload
@@ -97,7 +102,7 @@ RSpec.describe '/reviews', type: :request do
       end
 
       it 'renders a JSON response with the review' do
-        review = professional.reviews.last
+        review = client.reviews.last
         patch professional_review_url(professional, review),
               params: { review: new_attributes }, headers: valid_headers, as: :json
 
@@ -126,7 +131,7 @@ RSpec.describe '/reviews', type: :request do
 
   describe 'DELETE /destroy' do
     it 'destroys the requested review' do
-      review = professional.reviews.last
+      review = client.reviews.last
       expect do
         delete professional_review_url(professional, review), headers: valid_headers, as: :json
       end.to change(Review, :count).by(-1)
