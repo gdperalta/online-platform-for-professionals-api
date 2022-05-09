@@ -3,10 +3,13 @@ class ApplicationController < ActionController::API
   before_action :authenticate_user!
 
   def render_jsonapi_response(resource)
+    options = {
+      include: %i[professional client]
+    }
     if resource.errors.empty?
-      render json: resource
+      render json: UserSerializer.new(resource, options)
     else
-      render json: resource.errors, status: 400
+      render json: UserSerializer.new(resource.errors), status: 400
     end
   end
 
