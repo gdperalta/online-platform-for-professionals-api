@@ -9,7 +9,7 @@ class ConnectionsController < ApplicationController
   end
 
   def show
-    render json: ConnectionSerializer(@connection)
+    render json: ConnectionSerializer.new(@connection)
   end
 
   # TODO: create classification based on user role
@@ -17,9 +17,9 @@ class ConnectionsController < ApplicationController
     @connection = @professional.connections.build(connection_params)
 
     if @connection.save
-      render json: ConnectionSerializer(@connection), status: :created, location: @connection
+      render json: ConnectionSerializer.new(@connection), status: :created, location: @connection
     else
-      render json: ConnectionSerializer(@connection.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@connection.errors), status: :unprocessable_entity
     end
   end
 
