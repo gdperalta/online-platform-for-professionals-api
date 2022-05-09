@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :client do
-    user { nil }
+    # id { 1 }
   end
 end

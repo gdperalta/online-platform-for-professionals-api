@@ -7,12 +7,6 @@ FactoryBot.define do
     headline { 'MyHeadline' }
     association :user, :professional
 
-    trait :with_reviews do
-      before(:create) do |professional|
-        professional.reviews.build(attributes_for(:review))
-      end
-    end
-
     trait :with_services do
       before(:create) do |professional|
         professional.services.build(attributes_for(:service))

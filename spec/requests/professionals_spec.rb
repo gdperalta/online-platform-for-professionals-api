@@ -31,7 +31,7 @@ RSpec.describe '/professionals', type: :request do
       get professional_path(professional), headers: valid_headers, as: :json
       data = response.parsed_body['data']
       attributes = response.parsed_body['data']['attributes']
-
+      relationships = response.parsed_body['data']['relationships']
       expect(response).to be_successful
       expect(data).to include('id')
       expect(data).to include('attributes')
@@ -39,6 +39,9 @@ RSpec.describe '/professionals', type: :request do
                                     'licenseNumber' => '0012345',
                                     'headline' => 'MyHeadline',
                                     'officeAddress' => 'Office Address')
+      expect(relationships).to include('workPortfolios',
+                                       'services',
+                                       'reviews')
     end
   end
 

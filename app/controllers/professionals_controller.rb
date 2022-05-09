@@ -4,18 +4,18 @@ class ProfessionalsController < ApplicationController
   def index
     @professionals = Professional.all
 
-    render json: ProfessionalSerializer.new(@professionals)
+    render json: ProfessionalSerializer.new(@professionals, set_options)
   end
 
   def show
-    render json: ProfessionalSerializer.new(@professional)
+    render json: ProfessionalSerializer.new(@professional, set_options)
   end
 
   def create
     @professional = current_user.build_professional(professional_params)
 
     if @professional.save
-      render json: ProfessionalSerializer.new(@professional), status: :created
+      render json: ProfessionalSerializer.new(@professional, set_options), status: :created
     else
       render json: ProfessionalSerializer.new(@professional.errors), status: :unprocessable_entity
     end
@@ -23,7 +23,7 @@ class ProfessionalsController < ApplicationController
 
   def update
     if @professional.update(professional_params)
-      render json: ProfessionalSerializer.new(@professional)
+      render json: ProfessionalSerializer.new(@professional, set_options)
     else
       render json: ProfessionalSerializer.new(@professional.errors), status: :unprocessable_entity
     end
@@ -41,5 +41,11 @@ class ProfessionalsController < ApplicationController
 
   def professional_params
     params.require(:professional).permit(:user, :field, :license_number, :office_address, :headline)
+  end
+
+  def set_options
+    {
+      include: %i[user work_portfolios services reviews]
+    }
   end
 end
