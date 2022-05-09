@@ -38,15 +38,15 @@ class ConnectionsController < ApplicationController
 
   private
 
-  def set_connection
-    @connection = Connection.find(params[:id])
-  end
-
   def set_professional
     @professional = Professional.find(params[:professional_id])
   end
 
+  def set_connection
+    @connection = Connection.find(params[:id])
+  end
+
   def connection_params
-    params.require(:connection).permit(:professional_id, :client_id)
+    params.require(:connection).permit(:professional_id, :client_id, :classification)
   end
 end
