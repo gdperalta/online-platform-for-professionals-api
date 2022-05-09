@@ -22,5 +22,11 @@ FactoryBot.define do
         user.build_client(id: 2)
       end
     end
+
+    trait :no_association do
+      id { 3 }
+      email { 'test@email.com' }
+      role { 'professional' }
+    end
   end
 end
