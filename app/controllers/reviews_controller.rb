@@ -36,13 +36,13 @@ class ReviewsController < ApplicationController
 
   private
 
+  def set_professional
+    @professional = Professional.find(params[:professional_id])
+  end
+
   def set_review
     @professional = set_professional
     @review = @professional.reviews.find(params[:id])
-  end
-
-  def set_professional
-    @professional = Professional.find(params[:professional_id])
   end
 
   def review_params
