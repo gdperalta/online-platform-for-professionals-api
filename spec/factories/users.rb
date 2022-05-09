@@ -18,8 +18,10 @@ FactoryBot.define do
       email { 'client@email.com' }
       role { 'client' }
 
-      before(:create) do |user|
-        user.build_client(id: 2)
+      after(:create) do |user|
+        review = Review.new(attributes_for(:review))
+        review.client_id = user.client.id
+        review.save
       end
     end
 
