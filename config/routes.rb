@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :connections
   resources :professionals do
     resources :reviews
   end
