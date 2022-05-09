@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :review do
-    # id { 1 }
-    client_id { 2 }
+    professional_id { 1 }
     rating { 3 }
     body { 'My review' }
   end
