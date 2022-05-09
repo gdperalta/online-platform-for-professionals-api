@@ -6,6 +6,7 @@ FactoryBot.define do
     contact_number { '9151234567' }
     city { 'Manila' }
     region { 'NCR' }
+    confirmed_at { Time.now }
 
     trait :professional do
       id { 1 }
