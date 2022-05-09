@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :connections
   resources :professionals do
     resources :reviews
+    resources :services
+    resources :work_portfolios
   end
   devise_for :users,
              defaults: { format: :json },
