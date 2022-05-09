@@ -17,7 +17,7 @@ RSpec.describe '/reviews', type: :request do
 
   describe 'GET /index' do
     it 'renders a successful response' do
-      get professional_reviews_path(professional), headers: valid_headers, as: :json
+      get professional_reviews_url(professional), headers: valid_headers, as: :json
       data = response.parsed_body['data']
 
       expect(response).to be_successful
@@ -28,7 +28,7 @@ RSpec.describe '/reviews', type: :request do
 
   describe 'GET /show' do
     it 'renders a successful response' do
-      get professional_review_url(professional.id, professional.reviews.first.id), headers: valid_headers, as: :json
+      get professional_review_url(professional, professional.reviews.first), headers: valid_headers, as: :json
       data = response.parsed_body['data']
       attributes = response.parsed_body['data']['attributes']
 
