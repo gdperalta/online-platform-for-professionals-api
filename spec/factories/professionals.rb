@@ -12,5 +12,17 @@ FactoryBot.define do
         professional.reviews.build(attributes_for(:review))
       end
     end
+
+    trait :with_services do
+      before(:create) do |professional|
+        professional.services.build(attributes_for(:service))
+      end
+    end
+
+    trait :with_work_portfolios do
+      before(:create) do |professional|
+        professional.work_portfolios.build(attributes_for(:work_portfolio))
+      end
+    end
   end
 end
