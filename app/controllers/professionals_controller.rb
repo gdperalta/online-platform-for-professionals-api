@@ -17,7 +17,7 @@ class ProfessionalsController < ApplicationController
     if @professional.save
       render json: ProfessionalSerializer.new(@professional, set_options), status: :created
     else
-      render json: ProfessionalSerializer.new(@professional.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@professional.errors), status: :unprocessable_entity
     end
   end
 
@@ -25,7 +25,7 @@ class ProfessionalsController < ApplicationController
     if @professional.update(professional_params)
       render json: ProfessionalSerializer.new(@professional, set_options)
     else
-      render json: ProfessionalSerializer.new(@professional.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@professional.errors), status: :unprocessable_entity
     end
   end
 

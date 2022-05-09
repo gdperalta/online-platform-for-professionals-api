@@ -18,7 +18,7 @@ class WorkPortfoliosController < ApplicationController
     if @work_portfolio.save
       render json: WorkPortfolioSerializer.new(@work_portfolio), status: :created
     else
-      render json: WorkPortfolioSerializer.new(@work_portfolio.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@work_portfolio.errors), status: :unprocessable_entity
     end
   end
 
@@ -26,7 +26,7 @@ class WorkPortfoliosController < ApplicationController
     if @work_portfolio.update(work_portfolio_params)
       render json: WorkPortfolioSerializer.new(@work_portfolio)
     else
-      render json: WorkPortfolioSerializer.new(@work_portfolio.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@work_portfolio.errors), status: :unprocessable_entity
     end
   end
 

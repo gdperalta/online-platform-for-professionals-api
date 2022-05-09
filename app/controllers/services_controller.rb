@@ -18,7 +18,7 @@ class ServicesController < ApplicationController
     if @service.save
       render json: ServiceSerializer.new(@service), status: :created
     else
-      render json: ServiceSerializer.new(@service.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@service.errors), status: :unprocessable_entity
     end
   end
 
@@ -26,7 +26,7 @@ class ServicesController < ApplicationController
     if @service.update(service_params)
       render json: ServiceSerializer.new(@service)
     else
-      render json: ServiceSerializer.new(@service.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@service.errors), status: :unprocessable_entity
     end
   end
 

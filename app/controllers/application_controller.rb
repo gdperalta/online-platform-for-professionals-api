@@ -9,7 +9,7 @@ class ApplicationController < ActionController::API
     if resource.errors.empty?
       render json: UserSerializer.new(resource, options)
     else
-      render json: UserSerializer.new(resource.errors), status: 400
+      render json: ErrorSerializer.serialize(resource.errors), status: 400
     end
   end
 
