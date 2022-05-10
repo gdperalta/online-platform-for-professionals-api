@@ -5,4 +5,6 @@ class Professional < ApplicationRecord
   has_many :services, dependent: :destroy
   has_many :work_portfolios, dependent: :destroy
   has_many :clients, through: :connections
+
+  validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
 end
