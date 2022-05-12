@@ -5,6 +5,7 @@ require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
+require 'webmock/rspec'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -61,4 +62,35 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Disable net connection during tests
+  WebMock.disable_net_connect!(allow_localhost: true)
+
+  config.before(:each) do
+    stub_request(:get, 'https://api.calendly.com/users/me')
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer authorization-token',
+          'Content-Type' => 'application/json',
+          'Host' => 'api.calendly.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: 200, body: '{
+      "resource": {
+        "avatar_url": null,
+        "created_at": "2020-04-21T08:28:39.545681Z",
+        "current_organization": "https://api.calendly.com/organizations/EFCDPNBGBK4G2GZA",
+        "email": "godfreydjperalta@gmail.com",
+        "name": "Godfrey Peralta",
+        "scheduling_url": "https://calendly.com/godfreyperalta",
+        "slug": "godfreyperalta",
+        "timezone": "Asia/Manila",
+        "updated_at": "2022-05-05T15:12:20.880793Z",
+        "uri": "https://api.calendly.com/users/AEAAILCDAFWMPYKG"
+      }
+    }', headers: {})
+  end
 end
