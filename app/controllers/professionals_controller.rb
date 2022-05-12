@@ -4,7 +4,7 @@ class ProfessionalsController < ApplicationController
   def index
     @professionals = Professional.all
 
-    render json: ProfessionalSerializer.new(@professionals, set_options)
+    render json: ProfessionalSerializer.new(@professionals)
   end
 
   def show
@@ -30,7 +30,7 @@ class ProfessionalsController < ApplicationController
   end
 
   def destroy
-    @professional.destroy
+    @professional.user.destroy
   end
 
   private
