@@ -35,8 +35,8 @@ RSpec.describe '/calendly_tokens', type: :request do
       expect(data).to include('id')
       expect(data).to include('attributes')
       expect(attributes).to include('authorization' => 'authorization-token',
-                                    'user' => 'https://api.calendly.com/users/AEAAILCDAFWMPYKG',
-                                    'organization' => 'https://api.calendly.com/organizations/EFCDPNBGBK4G2GZA')
+                                    'user' => 'https://api.calendly.com/users/HHHHHHHHHH',
+                                    'organization' => 'https://api.calendly.com/organizations/ZZZZZZZZZZ')
     end
   end
 
@@ -61,8 +61,8 @@ RSpec.describe '/calendly_tokens', type: :request do
         expect(data).to include('id')
         expect(data).to include('attributes')
         expect(attributes).to include('authorization' => 'authorization-token',
-                                      'user' => 'https://api.calendly.com/users/AEAAILCDAFWMPYKG',
-                                      'organization' => 'https://api.calendly.com/organizations/EFCDPNBGBK4G2GZA')
+                                      'user' => 'https://api.calendly.com/users/HHHHHHHHHH',
+                                      'organization' => 'https://api.calendly.com/organizations/ZZZZZZZZZZ')
       end
     end
 
@@ -83,39 +83,47 @@ RSpec.describe '/calendly_tokens', type: :request do
     #   end
   end
 
-  # describe 'PATCH /update' do
-  #   context 'with valid parameters' do
-  #     let(:new_attributes) do
-  #       skip('Add a hash of attributes valid for your model')
-  #     end
+  describe 'PATCH /update' do
+    context 'with valid parameters' do
+      let(:new_attributes) do
+        { authorization: 'new-authorization-token' }
+      end
 
-  #     it 'updates the requested calendly_token' do
-  #       calendly_token = CalendlyToken.create! valid_attributes
-  #       patch calendly_token_url(calendly_token),
-  #             params: { calendly_token: new_attributes }, headers: valid_headers, as: :json
-  #       calendly_token.reload
-  #       skip('Add assertions for updated state')
-  #     end
+      it 'updates the requested calendly_token' do
+        calendly_token = professional.calendly_token
+        patch professional_calendly_token_url(professional, calendly_token),
+              params: { calendly_token: new_attributes }, headers: valid_headers, as: :json
+        calendly_token.reload
+        expect(calendly_token.authorization).to eql('new-authorization-token')
+      end
 
-  #     it 'renders a JSON response with the calendly_token' do
-  #       calendly_token = CalendlyToken.create! valid_attributes
-  #       patch calendly_token_url(calendly_token),
-  #             params: { calendly_token: new_attributes }, headers: valid_headers, as: :json
-  #       expect(response).to have_http_status(:ok)
-  #       expect(response.content_type).to match(a_string_including('application/json'))
-  #     end
-  #   end
+      it 'renders a JSON response with the calendly_token' do
+        calendly_token = professional.calendly_token
+        patch professional_calendly_token_url(professional, calendly_token),
+              params: { calendly_token: new_attributes }, headers: valid_headers, as: :json
+        data = response.parsed_body['data']
+        attributes = response.parsed_body['data']['attributes']
 
-  #   context 'with invalid parameters' do
-  #     it 'renders a JSON response with errors for the calendly_token' do
-  #       calendly_token = CalendlyToken.create! valid_attributes
-  #       patch calendly_token_url(calendly_token),
-  #             params: { calendly_token: invalid_attributes }, headers: valid_headers, as: :json
-  #       expect(response).to have_http_status(:unprocessable_entity)
-  #       expect(response.content_type).to match(a_string_including('application/json'))
-  #     end
-  #   end
-  # end
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to match(a_string_including('application/json'))
+        expect(data).to include('id')
+        expect(data).to include('attributes')
+        expect(attributes).to include('authorization' => 'new-authorization-token',
+                                      'user' => 'https://api.calendly.com/users/ABABABABABA',
+                                      'organization' => 'https://api.calendly.com/organizations/BBBBBBBBBBBB')
+      end
+    end
+
+    # context 'with invalid parameters' do
+    #   it 'renders a JSON response with errors for the calendly_token' do
+    #     calendly_token = CalendlyToken.create! valid_attributes
+    #     patch calendly_token_url(calendly_token),
+    #           params: { calendly_token: invalid_attributes }, headers: valid_headers, as: :json
+    #     expect(response).to have_http_status(:unprocessable_entity)
+    #     expect(response.content_type).to match(a_string_including('application/json'))
+    #   end
+    # end
+  end
 
   describe 'DELETE /destroy' do
     it 'destroys the requested calendly_token' do
