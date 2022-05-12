@@ -45,7 +45,7 @@ class ProfessionalsController < ApplicationController
 
   def set_options
     {
-      include: %i[user work_portfolios services reviews]
+      include: %i[user work_portfolios services reviews calendly_token]
     }
   end
 end
