@@ -82,14 +82,40 @@ RSpec.configure do |config|
       "resource": {
         "avatar_url": null,
         "created_at": "2020-04-21T08:28:39.545681Z",
-        "current_organization": "https://api.calendly.com/organizations/EFCDPNBGBK4G2GZA",
+        "current_organization": "https://api.calendly.com/organizations/ZZZZZZZZZZ",
         "email": "godfreydjperalta@gmail.com",
         "name": "Godfrey Peralta",
         "scheduling_url": "https://calendly.com/godfreyperalta",
         "slug": "godfreyperalta",
         "timezone": "Asia/Manila",
         "updated_at": "2022-05-05T15:12:20.880793Z",
-        "uri": "https://api.calendly.com/users/AEAAILCDAFWMPYKG"
+        "uri": "https://api.calendly.com/users/HHHHHHHHHH"
+      }
+    }', headers: {})
+
+    stub_request(:get, 'https://api.calendly.com/users/me')
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer new-authorization-token',
+          'Content-Type' => 'application/json',
+          'Host' => 'api.calendly.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: 200, body: '{
+      "resource": {
+        "avatar_url": null,
+        "created_at": "2020-04-21T08:28:39.545681Z",
+        "current_organization": "https://api.calendly.com/organizations/BBBBBBBBBBBB",
+        "email": "godfreydjperalta@gmail.com",
+        "name": "Godfrey Peralta",
+        "scheduling_url": "https://calendly.com/godfreyperalta",
+        "slug": "godfreyperalta",
+        "timezone": "Asia/Manila",
+        "updated_at": "2022-05-05T15:12:20.880793Z",
+        "uri": "https://api.calendly.com/users/ABABABABABA"
       }
     }', headers: {})
   end
