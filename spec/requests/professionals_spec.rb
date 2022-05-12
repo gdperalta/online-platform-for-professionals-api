@@ -147,6 +147,7 @@ RSpec.describe '/professionals', type: :request do
     it 'destroys the requested professional' do
       expect do
         delete professional_url(professional), headers: valid_headers, as: :json
+        expect(response).to have_http_status(:no_content)
       end.to change(Professional, :count).by(-1)
     end
   end
