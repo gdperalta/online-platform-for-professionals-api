@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :connections
+  resources :clients
   resources :professionals do
     resources :reviews
     resources :services
