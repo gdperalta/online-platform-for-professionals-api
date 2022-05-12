@@ -13,7 +13,8 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    @review = Review.new(review_params)
+    @review = current_user.client.reviews.build(review_params)
+    @review.professional_id = @professional.id
 
     if @review.save
       render json: ReviewSerializer.new(@review), status: :created
