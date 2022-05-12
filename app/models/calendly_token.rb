@@ -1,6 +1,6 @@
 class CalendlyToken < ApplicationRecord
   belongs_to :professional
-  before_create :add_tokens
+  before_save :add_tokens
   validates :authorization, presence: true, uniqueness: true
 
   def add_tokens
