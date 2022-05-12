@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :reviews
     resources :services
     resources :work_portfolios
+    resources :calendly_tokens
   end
   devise_for :users,
              defaults: { format: :json },
