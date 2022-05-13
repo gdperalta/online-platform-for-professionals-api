@@ -12,9 +12,10 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
   # end
 
   # GET /resource/confirmation?confirmation_token=abcdef
-  # def show
-  #   super
-  # end
+  def show
+    self.resource = resource_class.confirm_by_token(params[:confirmation_token])
+    render json: UserSerializer.new(resource)
+  end
 
   # protected
 
@@ -24,7 +25,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
   # end
 
   # The path used after confirmation.
-  # def after_confirmation_path_for(resource_name, resource)
+  # def after_confirmation_path_for(_resource_name, _resource)
   #   super(resource_name, resource)
   # end
 end
