@@ -13,12 +13,13 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    @review = Review.new(review_params)
+    @review = current_user.client.reviews.build(review_params)
+    @review.professional_id = @professional.id
 
     if @review.save
       render json: ReviewSerializer.new(@review), status: :created
     else
-      render json: ReviewSerializer.new(@review.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@review.errors), status: :unprocessable_entity
     end
   end
 
@@ -26,7 +27,7 @@ class ReviewsController < ApplicationController
     if @review.update(review_params)
       render json: ReviewSerializer.new(@review)
     else
-      render json: ReviewSerializer.new(@review.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@review.errors), status: :unprocessable_entity
     end
   end
 

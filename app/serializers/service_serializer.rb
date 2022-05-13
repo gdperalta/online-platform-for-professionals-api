@@ -1,5 +1,6 @@
 class ServiceSerializer
   include JSONAPI::Serializer
   set_key_transform :camel_lower
-  attributes :professional_id, :title, :details, :min_price, :max_price
+  attributes :title, :details, :min_price, :max_price
+  belongs_to :professional
 end

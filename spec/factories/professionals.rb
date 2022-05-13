@@ -18,5 +18,11 @@ FactoryBot.define do
         professional.work_portfolios.build(attributes_for(:work_portfolio))
       end
     end
+
+    trait :with_calendly_token do
+      before(:create) do |professional|
+        professional.build_calendly_token(authorization: 'authorization-token')
+      end
+    end
   end
 end

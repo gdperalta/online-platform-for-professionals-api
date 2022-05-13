@@ -36,8 +36,8 @@ RSpec.describe '/services', type: :request do
       expect(data).to include('attributes')
       expect(attributes).to include('title' => 'My Service',
                                     'details' => 'Service Details',
-                                    'minPrice' => 1.0,
-                                    'maxPrice' => 10.0)
+                                    'minPrice' => 50.0,
+                                    'maxPrice' => 100.0)
     end
   end
 
@@ -62,8 +62,8 @@ RSpec.describe '/services', type: :request do
         expect(data).to include('attributes')
         expect(attributes).to include('title' => 'My Service',
                                       'details' => 'Service Details',
-                                      'minPrice' => 1.0,
-                                      'maxPrice' => 10.0)
+                                      'minPrice' => 50.0,
+                                      'maxPrice' => 100.0)
       end
     end
 

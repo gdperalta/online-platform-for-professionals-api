@@ -5,7 +5,7 @@ RSpec.describe '/reviews', type: :request do
   let!(:client) { create(:user, :client).client }
 
   let(:valid_attributes) do
-    { professional_id: 1, client_id: client.id, rating: 3, body: 'My review' }
+    { rating: 3, body: 'My review' }
   end
 
   # let(:invalid_attributes) do

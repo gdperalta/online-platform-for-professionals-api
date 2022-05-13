@@ -18,7 +18,7 @@ class WorkPortfoliosController < ApplicationController
     if @work_portfolio.save
       render json: WorkPortfolioSerializer.new(@work_portfolio), status: :created
     else
-      render json: WorkPortfolioSerializer.new(@work_portfolio.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@work_portfolio.errors), status: :unprocessable_entity
     end
   end
 
@@ -26,7 +26,7 @@ class WorkPortfoliosController < ApplicationController
     if @work_portfolio.update(work_portfolio_params)
       render json: WorkPortfolioSerializer.new(@work_portfolio)
     else
-      render json: WorkPortfolioSerializer.new(@work_portfolio.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@work_portfolio.errors), status: :unprocessable_entity
     end
   end
 
@@ -42,7 +42,7 @@ class WorkPortfoliosController < ApplicationController
 
   def set_work_portfolio
     @professional = set_professional
-    @work_portfolio = WorkPortfolio.find(params[:id])
+    @work_portfolio = @professional.work_portfolios.find(params[:id])
   end
 
   def work_portfolio_params

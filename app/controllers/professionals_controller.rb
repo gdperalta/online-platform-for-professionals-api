@@ -4,7 +4,7 @@ class ProfessionalsController < ApplicationController
   def index
     @professionals = Professional.all
 
-    render json: ProfessionalSerializer.new(@professionals, set_options)
+    render json: ProfessionalSerializer.new(@professionals)
   end
 
   def show
@@ -17,7 +17,7 @@ class ProfessionalsController < ApplicationController
     if @professional.save
       render json: ProfessionalSerializer.new(@professional, set_options), status: :created
     else
-      render json: ProfessionalSerializer.new(@professional.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@professional.errors), status: :unprocessable_entity
     end
   end
 
@@ -25,12 +25,12 @@ class ProfessionalsController < ApplicationController
     if @professional.update(professional_params)
       render json: ProfessionalSerializer.new(@professional, set_options)
     else
-      render json: ProfessionalSerializer.new(@professional.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@professional.errors), status: :unprocessable_entity
     end
   end
 
   def destroy
-    @professional.destroy
+    @professional.user.destroy
   end
 
   private
@@ -45,7 +45,7 @@ class ProfessionalsController < ApplicationController
 
   def set_options
     {
-      include: %i[user work_portfolios services reviews]
+      include: %i[user work_portfolios services reviews calendly_token]
     }
   end
 end
