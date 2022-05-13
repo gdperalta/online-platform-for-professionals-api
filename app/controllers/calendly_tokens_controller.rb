@@ -46,6 +46,6 @@ class CalendlyTokensController < ApplicationController
   end
 
   def calendly_token_params
-    params.require(:calendly_token).permit(:professional_id, :authorization, :user, :organization)
+    params.require(:calendly_token).permit(:authorization)
   end
 end
