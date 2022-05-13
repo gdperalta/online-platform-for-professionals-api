@@ -1,16 +1,120 @@
 # README
 
-## **API**
+# **API**
 
-### **Professional**
+## **Session**
 
-#### Get /professionals
+### _Post /login_
+
+**Request**
+
+Body:
+
+- email
+  - email of the user to be logged in
+- password
+  - password of the user to be logged in
+
+**Sample Response**
+
+```json
+{
+	"data": {
+		"id": "2",
+		"type": "personalDetails",
+		"attributes": {
+			"email": "test@email.com",
+			"firstName": "John",
+			"lastName": "Lloyd",
+			"contactNumber": "9151234567",
+			"city": "Manila",
+			"region": "NCR",
+			"role": "professional"
+		},
+		"relationships": {
+			"professional": {
+				"data": {
+					"id": "1",
+					"type": "professional"
+				}
+			}
+		}
+	},
+	"included": [
+		{
+			"id": "1",
+			"type": "professional",
+			"attributes": {
+				"field": "Programmer",
+				"licenseNumber": "0012345",
+				"officeAddress": null,
+				"headline": null
+			},
+			"relationships": {
+				"user": {
+					"data": {
+						"id": "2",
+						"type": "personalDetails"
+					}
+				},
+				"workPortfolios": {
+					"data": [
+						{
+							"id": "1",
+							"type": "workPortfolio"
+						}
+					]
+				},
+				"services": {
+					"data": [
+						{
+							"id": "1",
+							"type": "service"
+						}
+					]
+				},
+				"reviews": {
+					"data": [
+						{
+							"id": "1",
+							"type": "review"
+						},
+						{
+							"id": "2",
+							"type": "review"
+						},
+						{
+							"id": "3",
+							"type": "review"
+						},
+						{
+							"id": "4",
+							"type": "review"
+						}
+					]
+				},
+				"calendlyToken": {
+					"data": {
+						"id": "2",
+						"type": "calendlyToken"
+					}
+				}
+			}
+		}
+	]
+}
+```
+
+## **Professional**
+
+### _Get /professionals_
 
 **Request**
 
 Headers:
-Authorization
-_Get the authorization token from login response headers_
+
+- Authorization
+  - _Authorization token from login response headers_
 
 **Sample Response**
 
@@ -172,17 +276,19 @@ _Get the authorization token from login response headers_
 }
 ```
 
-#### Get /professional/{:id}
+### _Get /professional/{:id}_
 
 **Request**
 
 Headers:
-Authorization
-_Get the authorization token from login response headers_
+
+- Authorization
+  - _Authorization token from login response headers_
 
 Params:
-:id
-_id of professional_
+
+- :id
+  - _ID of professional_
 
 **Sample Response**
 
@@ -349,3 +455,19 @@ _id of professional_
 	]
 }
 ```
+
+### _Post /professionals_
+
+Create professional field details for a user with role 'professional'
+
+**Request**
+
+Headers:
+
+- Authorization
+  - _Authorization token from login response headers_
+
+Body:
+
+- user_id
+  - ID of user
