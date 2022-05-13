@@ -16,7 +16,8 @@ class CalendlyTokensController < ApplicationController
     @calendly_token = @professional.build_calendly_token(calendly_token_params)
 
     if @calendly_token.save
-      render json: CalendlyTokenSerializer.new(@calendly_token), status: :created
+      render json: CalendlyTokenSerializer.new(@calendly_token), status: :created,
+             location: professional_calendly_token_path(@professional, @calendly_token)
     else
       render json: ErrorSerializer.serialize(@calendly_token.errors), status: :unprocessable_entity
     end

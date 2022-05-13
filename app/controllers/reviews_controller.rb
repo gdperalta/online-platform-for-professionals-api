@@ -17,7 +17,8 @@ class ReviewsController < ApplicationController
     @review.professional_id = @professional.id
 
     if @review.save
-      render json: ReviewSerializer.new(@review), status: :created
+      render json: ReviewSerializer.new(@review), status: :created,
+             location: professional_review_path(@professional, @review)
     else
       render json: ErrorSerializer.serialize(@review.errors), status: :unprocessable_entity
     end

@@ -16,7 +16,8 @@ class ServicesController < ApplicationController
     @service = @professional.services.build(service_params)
 
     if @service.save
-      render json: ServiceSerializer.new(@service), status: :created
+      render json: ServiceSerializer.new(@service), status: :created,
+             location: professional_service_path(@professional, @service)
     else
       render json: ErrorSerializer.serialize(@service.errors), status: :unprocessable_entity
     end

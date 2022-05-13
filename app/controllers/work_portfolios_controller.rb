@@ -16,7 +16,8 @@ class WorkPortfoliosController < ApplicationController
     @work_portfolio = @professional.work_portfolios.build(work_portfolio_params)
 
     if @work_portfolio.save
-      render json: WorkPortfolioSerializer.new(@work_portfolio), status: :created
+      render json: WorkPortfolioSerializer.new(@work_portfolio), status: :created,
+             location: professional_work_portfolio_path(@professional, @work_portfolio)
     else
       render json: ErrorSerializer.serialize(@work_portfolio.errors), status: :unprocessable_entity
     end
