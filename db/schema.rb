@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_12_130731) do
+ActiveRecord::Schema.define(version: 2022_05_14_035522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "professional_id", null: false
+    t.bigint "client_id", null: false
+    t.boolean "client_attended"
+    t.string "status"
+    t.string "event_uuid"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "no_show_link"
+    t.index ["client_id"], name: "index_bookings_on_client_id"
+    t.index ["professional_id"], name: "index_bookings_on_professional_id"
+  end
 
   create_table "calendly_tokens", force: :cascade do |t|
     t.bigint "professional_id", null: false
@@ -113,6 +126,8 @@ ActiveRecord::Schema.define(version: 2022_05_12_130731) do
     t.index ["professional_id"], name: "index_work_portfolios_on_professional_id"
   end
 
+  add_foreign_key "bookings", "clients"
+  add_foreign_key "bookings", "professionals"
   add_foreign_key "calendly_tokens", "professionals"
   add_foreign_key "clients", "users"
   add_foreign_key "connections", "clients"
