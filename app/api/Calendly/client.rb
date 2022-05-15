@@ -22,11 +22,11 @@ module Calendly
                    params: params)
     end
 
-    def self.event_invitee(event_id)
+    def self.event_invitee(authorization, event_id)
       response = Request.call(http_method: 'get',
                               endpoint: "/scheduled_events/#{event_id}/invitees",
                               authorization: authorization)
-      response[:data]['collection'].first['email']
+      response[:data]['collection'].first['uri']
     end
   end
 end
