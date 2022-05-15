@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_12_130731) do
+ActiveRecord::Schema.define(version: 2022_05_15_073000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,12 @@ ActiveRecord::Schema.define(version: 2022_05_12_130731) do
     t.string "classification", null: false
     t.index ["client_id"], name: "index_connections_on_client_id"
     t.index ["professional_id"], name: "index_connections_on_professional_id"
+  end
+
+  create_table "fields", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "jwt_denylist", force: :cascade do |t|
