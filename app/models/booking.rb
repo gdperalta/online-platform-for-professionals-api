@@ -1,6 +1,8 @@
 class Booking < ApplicationRecord
   belongs_to :professional
   belongs_to :client
+  validates :client_showed_up, inclusion: { in: [true, false],
+                                            message: 'value %<value>s is not valid' }
   validates :event_uuid, presence: true
   validates :invitee_link, presence: true
   validates :start_time, presence: true
