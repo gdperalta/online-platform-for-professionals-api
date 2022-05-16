@@ -2,10 +2,11 @@ class ApplicationController < ActionController::API
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
 
-  def render_jsonapi_response(resource)
-    options = {
-      include: %i[professional client]
-    }
+  def render_jsonapi_response(resource, meta: [])
+    options = {}
+    options[:include] = %i[professional client]
+    options[:meta] = meta
+
     if resource.errors.empty?
       render json: UserSerializer.new(resource, options)
     else
