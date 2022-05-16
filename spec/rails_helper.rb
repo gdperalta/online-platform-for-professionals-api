@@ -118,5 +118,125 @@ RSpec.configure do |config|
         "uri": "https://api.calendly.com/users/ABABABABABA"
       }
     }', headers: {})
+
+    stub_request(:get, "https://api.calendly.com/scheduled_events?count=5&invitee_email=client@email.com&min_start_time=#{Time.now}&status=active&user=https://api.calendly.com/users/HHHHHHHHHH")
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer authorization-token',
+          'Content-Length' => '0',
+          'Content-Type' => 'application/json',
+          'Host' => 'api.calendly.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: 200, body: '{
+          "collection": [
+            {
+              "created_at": "2020-04-21T13:38:30.932933Z",
+              "end_time": "2020-04-24T01:30:00.000000Z",
+              "event_guests": [],
+              "event_memberships": [
+                {
+                  "user": "https://api.calendly.com/users/AEAAILCDAFWMPYKG"
+                }
+              ],
+              "event_type": "https://api.calendly.com/event_types/FAEJV45PEUSJMKUL",
+              "invitees_counter": {
+                "active": 1,
+                "limit": 1,
+                "total": 1
+              },
+              "location": {
+                "location": null,
+                "type": "custom"
+              },
+              "name": "30 Minute Meeting",
+              "start_time": "2020-04-24T01:00:00.000000Z",
+              "status": "active",
+              "updated_at": "2020-04-21T13:38:32.219639Z",
+              "uri": "https://api.calendly.com/scheduled_events/AHMQKMIRKW66PMPC"
+            },
+            {
+              "created_at": "2020-04-21T13:42:15.677662Z",
+              "end_time": "2020-04-27T02:30:00.000000Z",
+              "event_guests": [],
+              "event_memberships": [
+                {
+                  "user": "https://api.calendly.com/users/AEAAILCDAFWMPYKG"
+                }
+              ],
+              "event_type": "https://api.calendly.com/event_types/FAEJV45PEUSJMKUL",
+              "invitees_counter": {
+                "active": 1,
+                "limit": 1,
+                "total": 1
+              },
+              "location": {
+                "location": null,
+                "type": "custom"
+              },
+              "name": "30 Minute Meeting",
+              "start_time": "2020-04-27T02:00:00.000000Z",
+              "status": "active",
+              "updated_at": "2020-04-21T13:42:17.132707Z",
+              "uri": "https://api.calendly.com/scheduled_events/ADNSLLJRPYESS47F"
+            }
+          ],
+          "pagination": {
+            "count": 2,
+            "next_page": "https://api.calendly.com/scheduled_events?count=2&page_token=ci0mpSTe7jAFlnJDDTiE_DGWavakPaUK&user=https%3A%2F%2Fapi.calendly.com%2Fusers%2FAEAAILCDAFWMPYKG",
+            "next_page_token": "ci0mpSTe7jAFlnJDDTiE_DGWavakPaUK",
+            "previous_page": null,
+            "previous_page_token": null
+          }
+        }', headers: {})
+
+    # stub_request(:get, 'https://api.calendly.com/scheduled_events/ADNSLLJRPYESS47F/invitees')
+    #   .with(
+    #     headers: {
+    #       'Accept' => '*/*',
+    #       'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+    #       'Authorization' => 'Bearer authorization-token',
+    #       'Content-Type' => 'application/json',
+    #       'Host' => 'api.calendly.com',
+    #       'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+    #     }
+    #   )
+    #   .to_return(status: 200, body: '{
+    #     "collection": [
+    #       {
+    #         "cancel_url": "https://calendly.com/cancellations/CHOW3WDOZOOE3AG5",
+    #         "created_at": "2020-04-21T13:42:15.703243Z",
+    #         "email": "client@email.com",
+    #         "event": "https://api.calendly.com/scheduled_events/ADNSLLJRPYESS47F",
+    #         "first_name": null,
+    #         "last_name": null,
+    #         "name": "Odie",
+    #         "new_invitee": null,
+    #         "no_show": null,
+    #         "old_invitee": null,
+    #         "payment": null,
+    #         "questions_and_answers": [],
+    #         "reconfirmation": null,
+    #         "reschedule_url": "https://calendly.com/reschedulings/CHOW3WDOZOOE3AG5",
+    #         "rescheduled": false,
+    #         "status": "active",
+    #         "text_reminder_number": null,
+    #         "timezone": "Asia/Manila",
+    #         "tracking": {
+    #           "utm_campaign": null,
+    #           "utm_source": null,
+    #           "utm_medium": null,
+    #           "utm_content": null,
+    #           "utm_term": null,
+    #           "salesforce_uuid": null
+    #         },
+    #         "updated_at": "2020-04-21T13:42:15.713896Z",
+    #         "uri": "https://api.calendly.com/scheduled_events/ADNSLLJRPYESS47F/invitees/CHOW3WDOZOOE3AG5"
+    #       }
+    #     ]
+    #   }', headers: {})
   end
 end

@@ -1,11 +1,79 @@
 class Professional < ApplicationRecord
   belongs_to :user
   has_many :reviews, dependent: :destroy
-  has_many :connections, dependent: :destroy
   has_many :services, dependent: :destroy
   has_many :work_portfolios, dependent: :destroy
-  has_many :clients, through: :connections
+  has_many :bookings, dependent: :destroy
+  has_many :subscriptions, -> { where classification: 'subscription' }, class_name: 'Connection', dependent: :destroy
+  has_many :subscribers, through: :subscriptions, source: :client
+  has_many :client_list, -> { where classification: 'client_list' }, class_name: 'Connection', dependent: :destroy
+  has_many :clients, through: :client_list
   has_one :calendly_token, dependent: :destroy
-
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
+
+  def event_bookings(status)
+    events = []
+    @status = status
+    subscribers.each do |subscriber|
+      params = set_parameters(subscriber)
+      events << handle_event(params)
+    end
+    events
+  end
+
+  private
+
+  def set_parameters(subscriber)
+    parameters = { user: calendly_token.user,
+                   invitee_email: subscriber.user.email,
+                   count: 5 }
+
+    case @status
+    when 'active'
+      parameters[:status] = 'active'
+      parameters[:min_start_time] = Time.now
+    when 'finished'
+      parameters[:status] = 'active'
+      parameters[:max_start_time] = Time.now
+    when 'canceled'
+      parameters[:status] = 'canceled'
+    end
+
+    parameters
+  end
+
+  def handle_event(params)
+    response = Calendly::Client.events(calendly_token.authorization, params: params)
+
+    result = format_response(response)
+
+    response[:data]['collection'].each do |event|
+      result[:data] << event_data(event)
+    end
+
+    result
+  end
+
+  def format_response(response)
+    {
+      links: {
+        next: response[:data]['pagination']['next_page_token'],
+        previous: response[:data]['pagination']['previous_page_token']
+      },
+      data: []
+    }
+  end
+
+  def event_data(event)
+    event_uuid = event['uri'].split('events/').last
+    response = Calendly::Client.event_invitee(calendly_token.authorization, event_uuid)
+    event['invitee_uri'] = response['uri']
+    event['invitee_email'] = response['email']
+
+    {
+      id: event_uuid,
+      type: "#{@status}_events",
+      attributes: event.except('created_at', 'event_guests', 'event_memberships', 'updated_at')
+    }
+  end
 end

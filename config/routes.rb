@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :connections
   resources :clients
   resources :professionals do
+    resources :bookings
     resources :reviews
     resources :services
     resources :work_portfolios

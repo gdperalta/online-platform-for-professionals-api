@@ -51,20 +51,21 @@ RSpec.describe '/professionals', type: :request do
       post '/login', params: { user: { email: 'test@email.com', password: 'password' } }
       { 'Accept': 'application/json', 'Authorization': response.headers['Authorization'] }
     end
-    let(:valid_attributes) do
+    let(:new_valid_attributes) do
       { field: 'Programmer', license_number: '0098765', headline: 'New Headline', office_address: 'New Address' }
     end
+
     context 'with valid parameters' do
       it 'creates a new Professional' do
         expect do
           post professionals_url,
-               params: { professional: valid_attributes }, headers: valid_headers, as: :json
+               params: { professional: new_valid_attributes }, headers: valid_headers, as: :json
         end.to change(Professional, :count).by(1)
       end
 
       it 'renders a JSON response with the new professional' do
         post professionals_url,
-             params: { professional: valid_attributes }, headers: valid_headers, as: :json
+             params: { professional: new_valid_attributes }, headers: valid_headers, as: :json
         data = response.parsed_body['data']
         attributes = response.parsed_body['data']['attributes']
 
