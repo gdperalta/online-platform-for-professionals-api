@@ -11,32 +11,50 @@ class Professional < ApplicationRecord
   has_one :calendly_token, dependent: :destroy
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
 
-  def event_bookings
+  def event_bookings(status)
     events = []
+    @status = status
     subscribers.each do |subscriber|
-      events << events_list({ user: calendly_token.user,
-                              invitee_email: subscriber.user.email,
-                              min_start_time: Time.now,
-                              count: 5 })
+      params = set_parameters(subscriber)
+      events << handle_event(params)
     end
     events
   end
 
   private
 
-  def events_list(params)
+  def set_parameters(subscriber)
+    parameters = { user: calendly_token.user,
+                   invitee_email: subscriber.user.email,
+                   count: 5 }
+
+    case @status
+    when 'active'
+      parameters[:status] = 'active'
+      parameters[:min_start_time] = Time.now
+    when 'finished'
+      parameters[:status] = 'active'
+      parameters[:max_start_time] = Time.now
+    when 'canceled'
+      parameters[:status] = 'canceled'
+    end
+
+    parameters
+  end
+
+  def handle_event(params)
     response = Calendly::Client.events(calendly_token.authorization, params: params)
 
-    result = event_data(response)
+    result = format_response(response)
 
     response[:data]['collection'].each do |event|
-      result[:data] << handle_event_data(event)
+      result[:data] << event_data(event)
     end
 
     result
   end
 
-  def event_data(response)
+  def format_response(response)
     {
       links: {
         next: response[:data]['pagination']['next_page_token'],
@@ -46,13 +64,15 @@ class Professional < ApplicationRecord
     }
   end
 
-  def handle_event_data(event)
+  def event_data(event)
     event_uuid = event['uri'].split('events/').last
-    event['invitee_uri'] = Calendly::Client.event_invitee(calendly_token.authorization, event_uuid)
+    response = Calendly::Client.event_invitee(calendly_token.authorization, event_uuid)
+    event['invitee_uri'] = response['uri']
+    event['invitee_email'] = response['email']
 
     {
-      type: 'events',
       id: event_uuid,
+      type: "#{@status}_events",
       attributes: event.except('created_at', 'event_guests', 'event_memberships', 'updated_at')
     }
   end
