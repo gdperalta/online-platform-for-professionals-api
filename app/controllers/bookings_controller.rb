@@ -1,32 +1,34 @@
 class BookingsController < ApplicationController
-  before_action :set_professional, only: %i[index]
+  before_action :set_professional, only: %i[index create]
   before_action :set_booking, only: %i[show update destroy]
 
   def index
-    @bookings = @professional.event_bookings
+    @bookings = @professional.event_bookings(params[:status])
 
     render json: @bookings
   end
 
   def show
-    render json: @booking
+    render json: BookingSerializer.new(@booking)
   end
 
   def create
-    @booking = Booking.new(booking_params)
+    @booking = @professional.bookings.build(booking_params)
+    @booking.client_id = User.find_by(email: params[:invitee_email]).client.id
 
     if @booking.save
-      render json: @booking, status: :created, location: @booking
+      render json: BookingSerializer.new(@booking), status: :created,
+             location: professional_booking_path(@professional, @booking)
     else
-      render json: @booking.errors, status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@booking.errors), status: :unprocessable_entity
     end
   end
 
   def update
     if @booking.update(booking_params)
-      render json: @booking
+      render json: BookingSerializer.new(@booking)
     else
-      render json: @booking.errors, status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@booking.errors), status: :unprocessable_entity
     end
   end
 
@@ -45,6 +47,9 @@ class BookingsController < ApplicationController
   end
 
   def booking_params
-    params.require(:booking).permit(:professional_id, :client_id, :client_attended, :status, :event_uuid)
+    params.require(:booking).permit(:professional_id, :client_id, :event_uuid,
+                                    :finished, :start_time, :end_time,
+                                    :client_showed_up, :no_show_link, :invitee_link,
+                                    canceled_bookings_attributes: [:reason])
   end
 end
