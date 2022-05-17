@@ -29,8 +29,11 @@ gem 'rack-cors'
 gem 'devise', '~> 4.8.1'
 # For authorization token
 gem 'devise-jwt', '~> 0.9.0'
-
+# For json api format
 gem 'jsonapi-serializer', '~> 2.2.0'
+# For pagination
+gem 'pagy', '~> 5.10'
+# For request of external API
 gem 'rest-client', '~> 2.1.0'
 
 group :development, :test do

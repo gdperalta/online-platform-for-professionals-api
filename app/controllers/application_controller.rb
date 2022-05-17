@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::API
+  include Pagy::Backend
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
+  after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def render_jsonapi_response(resource, meta: [])
     options = {}
