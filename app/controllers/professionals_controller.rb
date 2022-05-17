@@ -2,7 +2,8 @@ class ProfessionalsController < ApplicationController
   before_action :set_professional, only: %i[show update destroy]
 
   def index
-    @professionals = Professional.all
+    @professionals = Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews, :bookings,
+                                           :clients).all
 
     render json: ProfessionalSerializer.new(@professionals)
   end
@@ -36,7 +37,8 @@ class ProfessionalsController < ApplicationController
   private
 
   def set_professional
-    @professional = Professional.find(params[:id])
+    @professional = Professional.includes(:work_portfolios, :services, :calendly_token, :reviews,
+                                          :bookings).find(params[:id])
   end
 
   def professional_params
@@ -45,7 +47,7 @@ class ProfessionalsController < ApplicationController
 
   def set_options
     {
-      include: %i[user work_portfolios services reviews calendly_token]
+      include: %i[user work_portfolios services reviews calendly_token bookings]
     }
   end
 end
