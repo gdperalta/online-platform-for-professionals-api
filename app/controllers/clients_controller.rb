@@ -28,8 +28,7 @@ class ClientsController < ApplicationController
   end
 
   def pagination_links(pagy)
-    # Temporary link
-    uri = 'localhost:3001/clients'
+    uri = request.base_url + request.path
     {
       links: {
         self: "#{uri}?page=#{pagy.page}",

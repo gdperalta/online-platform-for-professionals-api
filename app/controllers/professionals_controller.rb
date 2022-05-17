@@ -3,7 +3,7 @@ class ProfessionalsController < ApplicationController
 
   def index
     @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
-                                                       :bookings, :clients).all)
+                                                       :bookings, :clients).all, items: 1)
 
     render json: ProfessionalSerializer.new(@professionals, pagination_links(@pagy))
   end
@@ -52,8 +52,7 @@ class ProfessionalsController < ApplicationController
   end
 
   def pagination_links(pagy)
-    # Temporary link
-    uri = 'localhost:3001/professionals'
+    uri = request.base_url + request.path
     {
       links: {
         self: "#{uri}?page=#{pagy.page}",
