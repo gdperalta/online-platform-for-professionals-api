@@ -6,5 +6,8 @@ class ProfessionalSerializer
   has_many :work_portfolios
   has_many :services
   has_many :reviews
+  has_many :bookings
+  # has_many :subscribers
+  has_many :clients
   has_one :calendly_token
 end
