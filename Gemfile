@@ -33,6 +33,8 @@ gem 'devise-jwt', '~> 0.9.0'
 gem 'jsonapi-serializer', '~> 2.2.0'
 # For pagination
 gem 'pagy', '~> 5.10'
+# For user authorization
+gem 'pundit', '~> 2.2.0'
 # For request of external API
 gem 'rest-client', '~> 2.1.0'
 
