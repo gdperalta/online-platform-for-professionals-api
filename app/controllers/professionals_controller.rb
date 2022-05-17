@@ -2,10 +2,10 @@ class ProfessionalsController < ApplicationController
   before_action :set_professional, only: %i[show update destroy]
 
   def index
-    @professionals = Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews, :bookings,
-                                           :clients).all
+    @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
+                                                       :bookings, :clients).all)
 
-    render json: ProfessionalSerializer.new(@professionals)
+    render json: ProfessionalSerializer.new(@professionals, pagination_links(@pagy))
   end
 
   def show
@@ -48,6 +48,19 @@ class ProfessionalsController < ApplicationController
   def set_options
     {
       include: %i[user work_portfolios services reviews calendly_token bookings]
+    }
+  end
+
+  def pagination_links(pagy)
+    # Temporary link
+    uri = 'localhost:3001/professionals'
+    {
+      links: {
+        self: "#{uri}?page=#{pagy.page}",
+        next: pagy.next.nil? ? nil : "#{uri}?page=#{pagy.next}",
+        prev: pagy.prev.nil? ? nil : "#{uri}?page=#{pagy.prev}",
+        last: "#{uri}?page=#{pagy.last}"
+      }
     }
   end
 end
