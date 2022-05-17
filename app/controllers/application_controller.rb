@@ -1,11 +1,14 @@
 class ApplicationController < ActionController::API
+  include Pagy::Backend
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
+  after_action { pagy_headers_merge(@pagy) if @pagy }
 
-  def render_jsonapi_response(resource)
-    options = {
-      include: %i[professional client]
-    }
+  def render_jsonapi_response(resource, meta: [])
+    options = {}
+    options[:include] = %i[professional client]
+    options[:meta] = meta
+
     if resource.errors.empty?
       render json: UserSerializer.new(resource, options)
     else

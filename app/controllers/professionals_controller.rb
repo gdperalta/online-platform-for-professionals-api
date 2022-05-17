@@ -2,9 +2,10 @@ class ProfessionalsController < ApplicationController
   before_action :set_professional, only: %i[show update destroy]
 
   def index
-    @professionals = Professional.all
+    @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
+                                                       :bookings, :clients).all, items: 1)
 
-    render json: ProfessionalSerializer.new(@professionals)
+    render json: ProfessionalSerializer.new(@professionals, pagination_links(@pagy))
   end
 
   def show
@@ -36,7 +37,8 @@ class ProfessionalsController < ApplicationController
   private
 
   def set_professional
-    @professional = Professional.find(params[:id])
+    @professional = Professional.includes(:work_portfolios, :services, :calendly_token, :reviews,
+                                          :bookings).find(params[:id])
   end
 
   def professional_params
@@ -45,7 +47,19 @@ class ProfessionalsController < ApplicationController
 
   def set_options
     {
-      include: %i[user work_portfolios services reviews calendly_token]
+      include: %i[user work_portfolios services reviews calendly_token bookings]
+    }
+  end
+
+  def pagination_links(pagy)
+    uri = request.base_url + request.path
+    {
+      links: {
+        self: "#{uri}?page=#{pagy.page}",
+        next: pagy.next.nil? ? nil : "#{uri}?page=#{pagy.next}",
+        prev: pagy.prev.nil? ? nil : "#{uri}?page=#{pagy.prev}",
+        last: "#{uri}?page=#{pagy.last}"
+      }
     }
   end
 end

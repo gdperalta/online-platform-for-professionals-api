@@ -1,5 +1,4 @@
 class ConnectionsController < ApplicationController
-  before_action :set_professional, only: %i[index create]
   before_action :set_connection, only: %i[show destroy]
 
   def index
@@ -8,13 +7,15 @@ class ConnectionsController < ApplicationController
     render json: ConnectionSerializer.new(@connections)
   end
 
-  def show
-    render json: ConnectionSerializer.new(@connection)
-  end
+  # def show
+  #   render json: ConnectionSerializer.new(@connection)
+  # end
 
   # TODO: create classification based on user role
   def create
-    @connection = @professional.connections.build(connection_params)
+    @connection = Connection.new(connection_params)
+
+    @connection.classification = current_user.role == 'professional' ? 'client_list' : 'subscription'
 
     if @connection.save
       render json: ConnectionSerializer.new(@connection), status: :created, location: @connection
@@ -37,10 +38,6 @@ class ConnectionsController < ApplicationController
   end
 
   private
-
-  def set_professional
-    @professional = Professional.find(params[:professional_id])
-  end
 
   def set_connection
     @connection = Connection.find(params[:id])

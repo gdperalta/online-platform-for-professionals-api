@@ -12,7 +12,7 @@ class User < ApplicationRecord
   validates :city, presence: true
   validates :region, presence: true
   validates :role, presence: true,
-                   inclusion: { in: %w[professional client admin], message: '%{value} is not a valid role' }
+                   inclusion: { in: %w[professional client admin], message: '%<value>s is not a valid role' }
 
   def build_client_association
     return unless role == 'client'

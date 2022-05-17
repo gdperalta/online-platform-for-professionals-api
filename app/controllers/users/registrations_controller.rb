@@ -13,7 +13,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
     resource.save
-    render_jsonapi_response(resource)
+    meta = [message: 'Account creation succesful! Please confirm your email address by clicking the link in the email we sent']
+    render_jsonapi_response(resource, meta: meta)
   end
 
   # GET /resource/edit
