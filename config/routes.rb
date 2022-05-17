@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     resources :work_portfolios
     resources :calendly_tokens
   end
+
+  get '/fields', to: 'fields#index'
+  
   devise_for :users,
              defaults: { format: :json },
              path: '',
