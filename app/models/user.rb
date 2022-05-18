@@ -15,7 +15,7 @@ class User < ApplicationRecord
   validate :role_not_changed, on: :update
 
   def role_not_changed
-    errors.add(:role, 'cannot be changed after account creation.') if role_changed?
+    errors.add(:role, 'cannot be changed after account creation') if role_changed?
   end
 
   def build_client_association
