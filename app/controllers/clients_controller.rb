@@ -12,6 +12,7 @@ class ClientsController < ApplicationController
   end
 
   def destroy
+    authorize @client
     @client.user.destroy
   end
 
