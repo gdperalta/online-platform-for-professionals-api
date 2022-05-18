@@ -12,6 +12,11 @@ class User < ApplicationRecord
   validates :region, presence: true
   validates :role, presence: true,
                    inclusion: { in: %w[professional client admin], message: '%<value>s is not a valid role' }
+  validate :role_not_changed, on: :update
+
+  def role_not_changed
+    errors.add(:role, 'cannot be changed after account creation.') if role_changed?
+  end
 
   def build_client_association
     return unless role == 'client'
