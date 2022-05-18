@@ -9,6 +9,7 @@ class Professional < ApplicationRecord
   has_many :client_list, -> { where classification: 'client_list' }, class_name: 'Connection', dependent: :destroy
   has_many :clients, through: :client_list
   has_one :calendly_token, dependent: :destroy
+  validates :user_id, uniqueness: true
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
 
   def event_bookings(status)
