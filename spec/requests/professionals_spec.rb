@@ -52,7 +52,8 @@ RSpec.describe '/professionals', type: :request do
       { 'Accept': 'application/json', 'Authorization': response.headers['Authorization'] }
     end
     let(:new_valid_attributes) do
-      { field: 'Programmer', license_number: '0098765', headline: 'New Headline', office_address: 'New Address' }
+      { user_id: user.id, field: 'Programmer', license_number: '0098765', headline: 'New Headline',
+        office_address: 'New Address' }
     end
 
     context 'with valid parameters' do
