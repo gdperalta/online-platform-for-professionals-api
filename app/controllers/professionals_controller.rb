@@ -3,7 +3,7 @@ class ProfessionalsController < ApplicationController
 
   def index
     @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
-                                                       :bookings, :clients).all)
+                                                       :bookings).all)
 
     render json: ProfessionalSerializer.new(@professionals, pagination_links(@pagy))
   end
