@@ -7,7 +7,7 @@ class Professional < ApplicationRecord
   has_many :subscriptions, -> { where classification: 'subscription' }, class_name: 'Connection', dependent: :destroy
   has_many :subscribers, through: :subscriptions, source: :client
   has_many :client_list, -> { where classification: 'client_list' }, class_name: 'Connection', dependent: :destroy
-  has_many :clients, through: :client_list
+  has_many :clientele, through: :client_list, source: :client
   has_one :calendly_token, dependent: :destroy
   validates :user_id, uniqueness: true
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
