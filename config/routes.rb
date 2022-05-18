@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get '/subscribers', to: 'connections#subscribers'
+  get '/subscribed_to', to: 'connections#subscribed_to'
+  get '/clientele', to: 'connections#clientele'
+  get '/my_professionals', to: 'connections#my_professionals'
   resources :connections, only: %i[create destroy]
   resources :clients, only: %i[index show destroy]
   resources :professionals do
