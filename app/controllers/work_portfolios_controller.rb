@@ -15,6 +15,8 @@ class WorkPortfoliosController < ApplicationController
   def create
     @work_portfolio = @professional.work_portfolios.build(work_portfolio_params)
 
+    authorize @work_portfolio
+
     if @work_portfolio.save
       render json: WorkPortfolioSerializer.new(@work_portfolio), status: :created,
              location: professional_work_portfolio_path(@professional, @work_portfolio)
@@ -24,6 +26,8 @@ class WorkPortfoliosController < ApplicationController
   end
 
   def update
+    authorize @work_portfolio
+
     if @work_portfolio.update(work_portfolio_params)
       render json: WorkPortfolioSerializer.new(@work_portfolio)
     else
@@ -32,6 +36,8 @@ class WorkPortfoliosController < ApplicationController
   end
 
   def destroy
+    authorize @work_portfolio
+
     @work_portfolio.destroy
   end
 
