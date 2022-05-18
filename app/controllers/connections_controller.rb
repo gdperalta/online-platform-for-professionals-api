@@ -13,8 +13,9 @@ class ConnectionsController < ApplicationController
 
   def create
     @connection = Connection.new(connection_params)
+    @connection.classification = current_user.professional? ? 'client_list' : 'subscription'
 
-    @connection.classification = current_user.role == 'professional' ? 'client_list' : 'subscription'
+    authorize @connection
 
     if @connection.save
       render json: ConnectionSerializer.new(@connection), status: :created, location: @connection
@@ -33,6 +34,8 @@ class ConnectionsController < ApplicationController
   # end
 
   def destroy
+    authorize @connection
+
     @connection.destroy
   end
 
@@ -43,6 +46,6 @@ class ConnectionsController < ApplicationController
   end
 
   def connection_params
-    params.require(:connection).permit(:professional_id, :client_id, :classification)
+    params.require(:connection).permit(:professional_id, :client_id)
   end
 end
