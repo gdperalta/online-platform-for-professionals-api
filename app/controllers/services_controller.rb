@@ -15,6 +15,8 @@ class ServicesController < ApplicationController
   def create
     @service = @professional.services.build(service_params)
 
+    authorize @service
+
     if @service.save
       render json: ServiceSerializer.new(@service), status: :created,
              location: professional_service_path(@professional, @service)
@@ -24,6 +26,8 @@ class ServicesController < ApplicationController
   end
 
   def update
+    authorize @service
+
     if @service.update(service_params)
       render json: ServiceSerializer.new(@service)
     else
@@ -32,6 +36,8 @@ class ServicesController < ApplicationController
   end
 
   def destroy
+    authorize @service
+
     @service.destroy
   end
 
