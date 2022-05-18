@@ -5,7 +5,6 @@ class User < ApplicationRecord
   has_one :professional, dependent: :destroy
   has_one :client, dependent: :destroy
   before_create :build_client_association
-
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :contact_number, presence: true, uniqueness: true, length: { is: 10 }
@@ -18,5 +17,13 @@ class User < ApplicationRecord
     return unless role == 'client'
 
     build_client
+  end
+
+  def professional?
+    role == 'professional'
+  end
+
+  def client?
+    role == 'client'
   end
 end
