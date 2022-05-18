@@ -1,5 +1,6 @@
 class ConnectionsController < ApplicationController
   before_action :set_connection, only: %i[show destroy]
+  before_action :set_user, only: %i[subscribers clientele subscribed_to my_professionals]
 
   def create
     @connection = Connection.new(connection_params)
@@ -15,27 +16,19 @@ class ConnectionsController < ApplicationController
   end
 
   def subscribers
-    professional = current_user.professional
-
-    render json: ClientSerializer.new(professional.subscribers, set_options)
+    render json: ClientSerializer.new(@user.subscribers, set_options)
   end
 
   def clientele
-    professional = current_user.professional
-
-    render json: ClientSerializer.new(professional.clientele, set_options)
+    render json: ClientSerializer.new(@user.clientele, set_options)
   end
 
   def subscribed_to
-    client = current_user.client
-
-    render json: ClientSerializer.new(client.subscribed_to, set_options)
+    render json: ClientSerializer.new(@user.subscribed_to, set_options)
   end
 
   def my_professionals
-    client = current_user.client
-
-    render json: ClientSerializer.new(client.my_professionals, set_options)
+    render json: ClientSerializer.new(@user.my_professionals, set_options)
   end
 
   def destroy
@@ -45,6 +38,10 @@ class ConnectionsController < ApplicationController
   end
 
   private
+
+  def set_user
+    @user = current_user.professional || current_user.client
+  end
 
   def set_connection
     @connection = Connection.find(params[:id])
