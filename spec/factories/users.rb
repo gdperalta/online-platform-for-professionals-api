@@ -26,14 +26,14 @@ FactoryBot.define do
         review.save
       end
 
-      after(:create) do |user|
-        connection = Connection.new(
-          professional_id: 1,
-          client_id: user.client.id,
-          classification: 'subscription'
-        )
-        connection.save
-      end
+      # after(:create) do |user|
+      #   connection = Connection.new(
+      #     professional_id: 1,
+      #     client_id: user.client.id,
+      #     classification: 'subscription'
+      #   )
+      #   connection.save
+      # end
     end
 
     trait :no_association do
