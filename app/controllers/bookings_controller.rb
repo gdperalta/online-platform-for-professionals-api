@@ -3,18 +3,24 @@ class BookingsController < ApplicationController
   before_action :set_booking, only: %i[show update destroy]
 
   def index
+    authorize @professional, policy_class: BookingPolicy
+
     @bookings = @professional.event_bookings(params[:status])
 
     render json: @bookings
   end
 
   def show
+    authorize @booking
+
     render json: BookingSerializer.new(@booking)
   end
 
   def create
     @booking = @professional.bookings.build(booking_params)
     @booking.client_id = User.find_by(email: params[:invitee_email]).client.id
+
+    authorize @booking
 
     if @booking.save
       render json: BookingSerializer.new(@booking), status: :created,
@@ -25,6 +31,8 @@ class BookingsController < ApplicationController
   end
 
   def update
+    authorize @booking
+
     if @booking.update(booking_params)
       render json: BookingSerializer.new(@booking)
     else
@@ -33,6 +41,8 @@ class BookingsController < ApplicationController
   end
 
   def destroy
+    authorize @booking
+
     @booking.destroy
   end
 
