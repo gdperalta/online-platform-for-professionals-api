@@ -23,9 +23,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    resource.update(sign_up_params)
+    render_jsonapi_response(resource)
+  end
 
   # DELETE /resource
   # def destroy
