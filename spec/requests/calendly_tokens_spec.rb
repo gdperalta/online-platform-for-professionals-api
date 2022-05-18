@@ -35,8 +35,8 @@ RSpec.describe '/calendly_tokens', type: :request do
       expect(data).to include('id')
       expect(data).to include('attributes')
       expect(attributes).to include('authorization' => 'authorization-token',
-                                    'user' => 'https://api.calendly.com/users/HHHHHHHHHH',
-                                    'organization' => 'https://api.calendly.com/organizations/ZZZZZZZZZZ')
+                                    'userUri' => 'https://api.calendly.com/users/HHHHHHHHHH',
+                                    'organizationUri' => 'https://api.calendly.com/organizations/ZZZZZZZZZZ')
     end
   end
 
@@ -61,8 +61,8 @@ RSpec.describe '/calendly_tokens', type: :request do
         expect(data).to include('id')
         expect(data).to include('attributes')
         expect(attributes).to include('authorization' => 'authorization-token',
-                                      'user' => 'https://api.calendly.com/users/HHHHHHHHHH',
-                                      'organization' => 'https://api.calendly.com/organizations/ZZZZZZZZZZ')
+                                      'userUri' => 'https://api.calendly.com/users/HHHHHHHHHH',
+                                      'organizationUri' => 'https://api.calendly.com/organizations/ZZZZZZZZZZ')
       end
     end
 
@@ -109,8 +109,8 @@ RSpec.describe '/calendly_tokens', type: :request do
         expect(data).to include('id')
         expect(data).to include('attributes')
         expect(attributes).to include('authorization' => 'new-authorization-token',
-                                      'user' => 'https://api.calendly.com/users/ABABABABABA',
-                                      'organization' => 'https://api.calendly.com/organizations/BBBBBBBBBBBB')
+                                      'userUri' => 'https://api.calendly.com/users/ABABABABABA',
+                                      'organizationUri' => 'https://api.calendly.com/organizations/BBBBBBBBBBBB')
       end
     end
 
