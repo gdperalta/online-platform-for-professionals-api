@@ -8,6 +8,6 @@ class ProfessionalSerializer
   has_many :reviews
   has_many :bookings
   # has_many :subscribers
-  has_many :clients
+  # has_many :clients
   has_one :calendly_token
 end
