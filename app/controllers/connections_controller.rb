@@ -11,7 +11,6 @@ class ConnectionsController < ApplicationController
   #   render json: ConnectionSerializer.new(@connection)
   # end
 
-  # TODO: create classification based on user role
   def create
     @connection = Connection.new(connection_params)
 
