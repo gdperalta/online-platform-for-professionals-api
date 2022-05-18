@@ -58,11 +58,19 @@ RSpec.describe User, type: :model do
         expect(user.errors[:role]).to include("can't be blank")
       end
 
-      it 'is an invalid role ' do
+      it 'is an invalid role' do
         user.role = 'OwnRole'
         expect(user).to_not be_valid
         expect(user.errors.to_hash.keys).to include(:role)
         expect(user.errors[:role]).to include('OwnRole is not a valid role')
+      end
+
+      it 'cannot be changed after account creation' do
+        user = create(:user, :professional)
+        user.role = 'client'
+        expect(user).to_not be_valid
+        expect(user.errors.to_hash.keys).to include(:role)
+        expect(user.errors[:role]).to include('cannot be changed after account creation')
       end
     end
   end
