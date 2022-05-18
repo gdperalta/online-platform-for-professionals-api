@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
-  resources :connections
-  resources :clients
+  resources :connections, only: %i[create destroy]
+  resources :clients, only: %i[index show destroy]
   resources :professionals do
     resources :bookings
     resources :reviews
     resources :services
     resources :work_portfolios
-    resources :calendly_tokens
+    resources :calendly_tokens, except: :index
   end
   devise_for :users,
              defaults: { format: :json },

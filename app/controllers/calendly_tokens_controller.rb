@@ -1,12 +1,6 @@
 class CalendlyTokensController < ApplicationController
   before_action :set_calendly_token, only: %i[show update destroy]
 
-  # def index
-  #   @calendly_tokens = CalendlyToken.all
-
-  #   render json: CalendlyTokenSerializer.new(@calendly_tokens)
-  # end
-
   def show
     authorize @calendly_token
 
