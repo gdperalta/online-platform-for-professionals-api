@@ -24,9 +24,9 @@ class Professional < ApplicationRecord
 
   private
 
-  def set_parameters(subscriber)
+  def set_parameters(client)
     parameters = { user: calendly_token.user,
-                   invitee_email: subscriber.user.email,
+                   invitee_email: client.user.email,
                    count: 5 }
 
     case @status
