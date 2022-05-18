@@ -2,7 +2,7 @@ class ClientsController < ApplicationController
   before_action :set_client, only: %i[show destroy]
 
   def index
-    @pagy, @clients = pagy(Client.includes(:user, :reviews, :bookings, :professionals).all)
+    @pagy, @clients = pagy(Client.includes(:user, :reviews, :bookings).all)
 
     render json: ClientSerializer.new(@clients, pagination_links(@pagy))
   end
@@ -19,7 +19,7 @@ class ClientsController < ApplicationController
   private
 
   def set_client
-    @client = Client.includes(:user, :reviews, :bookings, :professionals).find(params[:id])
+    @client = Client.includes(:user, :reviews, :bookings).find(params[:id])
   end
 
   def set_options

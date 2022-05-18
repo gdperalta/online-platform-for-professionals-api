@@ -6,5 +6,5 @@ class Client < ApplicationRecord
   has_many :subscriptions, -> { where classification: 'subscription' }, class_name: 'Connection', dependent: :destroy
   has_many :subscribed_to, through: :subscriptions, source: :professional
   has_many :professional_list, -> { where classification: 'client_list' }, class_name: 'Connection', dependent: :destroy
-  has_many :professionals, through: :professional_list
+  has_many :my_professionals, through: :professional_list, source: :professional
 end
