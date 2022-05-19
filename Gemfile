@@ -35,6 +35,8 @@ gem 'jsonapi-serializer', '~> 2.2.0'
 gem 'pagy', '~> 5.10'
 # For user authorization
 gem 'pundit', '~> 2.2.0'
+# For searches
+gem 'ransack', '~> 3.0.1'
 # For request of external API
 gem 'rest-client', '~> 2.1.0'
 
