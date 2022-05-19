@@ -21,12 +21,6 @@ FactoryBot.define do
       role { 'client' }
 
       # after(:create) do |user|
-      #   review = Review.new(attributes_for(:review))
-      #   review.client_id = user.client.id
-      #   review.save
-      # end
-
-      # after(:create) do |user|
       #   connection = Connection.new(
       #     professional_id: 1,
       #     client_id: user.client.id,
@@ -41,6 +35,13 @@ FactoryBot.define do
       contact_number { '9158765432' }
       email { 'test@email.com' }
       role { 'professional' }
+    end
+
+    trait :admin do
+      id { 4 }
+      contact_number { '9134652874' }
+      email { 'admin@email.com' }
+      role { 'admin' }
     end
   end
 end
