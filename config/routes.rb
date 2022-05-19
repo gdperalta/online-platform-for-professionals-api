@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :bookings, except: :create
 
   resources :professionals do
-    post '/bookings', to: 'bookings#create', as: 'professional_booking'
+    post '/bookings', to: 'bookings#create', as: 'bookings'
     resources :reviews
     resources :services
     resources :work_portfolios
