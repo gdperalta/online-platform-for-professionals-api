@@ -23,7 +23,7 @@ class BookingsController < ApplicationController
 
     if @booking.save
       render json: BookingSerializer.new(@booking), status: :created,
-             location: professional_booking_path(@professional, @booking)
+             location: @booking
     else
       render json: ErrorSerializer.serialize(@booking.errors), status: :unprocessable_entity
     end
