@@ -4,8 +4,13 @@ class ProfessionalsController < ApplicationController
   def index
     @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
                                                        :bookings).all)
+    render json: ProfessionalSerializer.new(@professionals, pagination_links)
+  end
 
-    render json: ProfessionalSerializer.new(@professionals, pagination_links(@pagy))
+  def search
+    @pagy, @professionals = pagy(Professional.ransack(params[:q]).result)
+
+    render json: ProfessionalSerializer.new(@professionals, pagination_links)
   end
 
   def show
@@ -57,15 +62,17 @@ class ProfessionalsController < ApplicationController
     }
   end
 
-  def pagination_links(pagy)
-    uri = request.base_url + request.path
-    {
-      links: {
-        self: "#{uri}?page=#{pagy.page}",
-        next: pagy.next.nil? ? nil : "#{uri}?page=#{pagy.next}",
-        prev: pagy.prev.nil? ? nil : "#{uri}?page=#{pagy.prev}",
-        last: "#{uri}?page=#{pagy.last}"
-      }
-    }
+  def pagination_links
+    links = { self: request.original_url }
+    headers = pagy_headers_merge(@pagy)
+
+    headers['Link'].split(', ').each do |link|
+      url = link[/<(.*?)>/, 1]
+      page = link[/"(.*)"/, 1]
+
+      links[page] = url
+    end
+
+    { links: links }
   end
 end
