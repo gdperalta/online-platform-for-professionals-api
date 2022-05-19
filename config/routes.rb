@@ -5,8 +5,10 @@ Rails.application.routes.draw do
   get '/my_professionals', to: 'connections#my_professionals'
   resources :connections, only: %i[create destroy]
   resources :clients, only: %i[index show destroy]
+  resources :bookings, except: :create
+
   resources :professionals do
-    resources :bookings
+    post '/bookings', to: 'bookings#create', as: 'professional_booking'
     resources :reviews
     resources :services
     resources :work_portfolios
