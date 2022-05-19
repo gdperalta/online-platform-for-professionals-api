@@ -1,8 +1,7 @@
 class Booking < ApplicationRecord
   belongs_to :professional
   belongs_to :client
-  validates :client_showed_up, inclusion: { in: [true, false],
-                                            message: 'value %<value>s is not valid' }
+  validates :client_showed_up, inclusion: [true, false]
   validates :event_uuid, presence: true
   validates :invitee_link, presence: true
   validates :start_time, presence: true
@@ -12,6 +11,8 @@ class Booking < ApplicationRecord
   validate :verify_date
 
   def verify_date
+    return if end_time.nil?
+
     errors.add(:end_time, 'scheduled time is not yet finished') if end_time > Time.now
   end
 
@@ -28,7 +29,7 @@ class Booking < ApplicationRecord
   end
 
   def cancel_marked_client_no_show
-    return unless client_showed_up_changed? && client_showed_up
+    return unless changed_attributes['client_showed_up'] == false && client_showed_up
 
     response = Calendly::Client.delete_invitee_no_show(professional.calendly_token.authorization, no_show_link)
 

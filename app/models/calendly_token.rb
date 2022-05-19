@@ -1,11 +1,19 @@
 class CalendlyToken < ApplicationRecord
   belongs_to :professional
-  before_save :add_tokens
+  before_validation :add_tokens
+  validates :professional_id, uniqueness: true
   validates :authorization, presence: true, uniqueness: true
 
   def add_tokens
-    calendly_api = Calendly::Client.user(authorization)
-    self.user = calendly_api.user_uri
-    self.organization = calendly_api.organization_uri
+    return if authorization.blank?
+
+    response = Calendly::Client.user(authorization)
+
+    if response[:code] < 300
+      self.user_uri = response[:data]['resource']['uri']
+      self.organization_uri = response[:data]['resource']['current_organization']
+    else
+      errors.add(:authorization, 'unauthorized! Please check calendly token.')
+    end
   end
 end

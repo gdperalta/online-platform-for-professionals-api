@@ -7,10 +7,12 @@ class Professional < ApplicationRecord
   has_many :subscriptions, -> { where classification: 'subscription' }, class_name: 'Connection', dependent: :destroy
   has_many :subscribers, through: :subscriptions, source: :client
   has_many :client_list, -> { where classification: 'client_list' }, class_name: 'Connection', dependent: :destroy
-  has_many :clients, through: :client_list
+  has_many :clientele, through: :client_list, source: :client
   has_one :calendly_token, dependent: :destroy
+  validates :user_id, uniqueness: true
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
 
+  # TODO: For refactoring
   def event_bookings(status)
     events = []
     @status = status
@@ -23,9 +25,9 @@ class Professional < ApplicationRecord
 
   private
 
-  def set_parameters(subscriber)
-    parameters = { user: calendly_token.user,
-                   invitee_email: subscriber.user.email,
+  def set_parameters(client)
+    parameters = { user: calendly_token.user_uri,
+                   invitee_email: client.user.email,
                    count: 5 }
 
     case @status

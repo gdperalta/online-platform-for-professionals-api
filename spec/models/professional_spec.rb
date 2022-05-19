@@ -7,6 +7,16 @@ RSpec.describe Professional, type: :model do
       expect(professional).to be_valid
     end
 
+    context 'user_id' do
+      it 'is invalid if is not unique' do
+        pro = create(:professional)
+        professional.user_id = pro.id
+        expect(professional).to_not be_valid
+        expect(professional.errors.to_hash.keys).to include(:user_id)
+        expect(professional.errors[:user_id]).to include(/has already been taken/)
+      end
+    end
+
     context 'license_number' do
       it 'is invalid if blank' do
         professional.license_number = ''
@@ -23,8 +33,8 @@ RSpec.describe Professional, type: :model do
       end
 
       it 'is invalid if is not unique' do
-        create(:professional)
-        professional.license_number = '0012345'
+        pro = create(:professional)
+        professional.license_number = pro.license_number
         expect(professional).to_not be_valid
         expect(professional.errors.to_hash.keys).to include(:license_number)
         expect(professional.errors[:license_number]).to include(/has already been taken/)

@@ -1,14 +1,17 @@
 class BookingsController < ApplicationController
-  before_action :set_professional, only: %i[index create]
+  before_action :set_professional, only: %i[create]
   before_action :set_booking, only: %i[show update destroy]
 
   def index
-    @bookings = @professional.event_bookings(params[:status])
+    @user = current_user.professional || current_user.client
+    @bookings = @user.event_bookings(params[:status])
 
     render json: @bookings
   end
 
   def show
+    authorize @booking
+
     render json: BookingSerializer.new(@booking)
   end
 
@@ -16,15 +19,19 @@ class BookingsController < ApplicationController
     @booking = @professional.bookings.build(booking_params)
     @booking.client_id = User.find_by(email: params[:invitee_email]).client.id
 
+    authorize @booking
+
     if @booking.save
       render json: BookingSerializer.new(@booking), status: :created,
-             location: professional_booking_path(@professional, @booking)
+             location: @booking
     else
       render json: ErrorSerializer.serialize(@booking.errors), status: :unprocessable_entity
     end
   end
 
   def update
+    authorize @booking
+
     if @booking.update(booking_params)
       render json: BookingSerializer.new(@booking)
     else
@@ -33,6 +40,8 @@ class BookingsController < ApplicationController
   end
 
   def destroy
+    authorize @booking
+
     @booking.destroy
   end
 

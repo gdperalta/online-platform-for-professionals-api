@@ -1,8 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe '/reviews', type: :request do
-  let!(:professional) { create(:professional) }
+  let!(:professional) { create(:professional, :with_calendly_token) }
   let!(:client) { create(:user, :client).client }
+  let!(:booking) { create(:booking, professional_id: professional.id, client_id: client.id) }
+
+  before do
+    Review.create(professional_id: professional.id, client_id: client.id, rating: 3, body: 'My review')
+  end
 
   let(:valid_attributes) do
     { rating: 3, body: 'My review' }

@@ -67,6 +67,7 @@ RSpec.configure do |config|
   WebMock.disable_net_connect!(allow_localhost: true)
 
   config.before(:each) do
+    # Calendly::Client.user
     stub_request(:get, 'https://api.calendly.com/users/me')
       .with(
         headers: {
@@ -93,6 +94,7 @@ RSpec.configure do |config|
       }
     }', headers: {})
 
+    # Calendly::Client.user new token
     stub_request(:get, 'https://api.calendly.com/users/me')
       .with(
         headers: {
@@ -119,7 +121,8 @@ RSpec.configure do |config|
       }
     }', headers: {})
 
-    stub_request(:get, "https://api.calendly.com/scheduled_events?count=5&invitee_email=client@email.com&min_start_time=#{Time.now}&status=active&user=https://api.calendly.com/users/HHHHHHHHHH")
+    # Calendly::Client.events
+    stub_request(:get, 'https://api.calendly.com/scheduled_events?count=5&invitee_email=client@email.com&min_start_time=2022-05-19%2000:00:00%20%2B0800&status=active&user=https://api.calendly.com/users/HHHHHHHHHH')
       .with(
         headers: {
           'Accept' => '*/*',
@@ -156,7 +159,7 @@ RSpec.configure do |config|
               "start_time": "2020-04-24T01:00:00.000000Z",
               "status": "active",
               "updated_at": "2020-04-21T13:38:32.219639Z",
-              "uri": "https://api.calendly.com/scheduled_events/AHMQKMIRKW66PMPC"
+              "uri": "https://api.calendly.com/scheduled_events/ZZZZZZZZZZ"
             },
             {
               "created_at": "2020-04-21T13:42:15.677662Z",
@@ -181,7 +184,7 @@ RSpec.configure do |config|
               "start_time": "2020-04-27T02:00:00.000000Z",
               "status": "active",
               "updated_at": "2020-04-21T13:42:17.132707Z",
-              "uri": "https://api.calendly.com/scheduled_events/ADNSLLJRPYESS47F"
+              "uri": "https://api.calendly.com/scheduled_events/ZZZZZZZZZZ"
             }
           ],
           "pagination": {
@@ -193,50 +196,125 @@ RSpec.configure do |config|
           }
         }', headers: {})
 
-    # stub_request(:get, 'https://api.calendly.com/scheduled_events/ADNSLLJRPYESS47F/invitees')
-    #   .with(
-    #     headers: {
-    #       'Accept' => '*/*',
-    #       'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-    #       'Authorization' => 'Bearer authorization-token',
-    #       'Content-Type' => 'application/json',
-    #       'Host' => 'api.calendly.com',
-    #       'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
-    #     }
-    #   )
-    #   .to_return(status: 200, body: '{
-    #     "collection": [
-    #       {
-    #         "cancel_url": "https://calendly.com/cancellations/CHOW3WDOZOOE3AG5",
-    #         "created_at": "2020-04-21T13:42:15.703243Z",
-    #         "email": "client@email.com",
-    #         "event": "https://api.calendly.com/scheduled_events/ADNSLLJRPYESS47F",
-    #         "first_name": null,
-    #         "last_name": null,
-    #         "name": "Odie",
-    #         "new_invitee": null,
-    #         "no_show": null,
-    #         "old_invitee": null,
-    #         "payment": null,
-    #         "questions_and_answers": [],
-    #         "reconfirmation": null,
-    #         "reschedule_url": "https://calendly.com/reschedulings/CHOW3WDOZOOE3AG5",
-    #         "rescheduled": false,
-    #         "status": "active",
-    #         "text_reminder_number": null,
-    #         "timezone": "Asia/Manila",
-    #         "tracking": {
-    #           "utm_campaign": null,
-    #           "utm_source": null,
-    #           "utm_medium": null,
-    #           "utm_content": null,
-    #           "utm_term": null,
-    #           "salesforce_uuid": null
-    #         },
-    #         "updated_at": "2020-04-21T13:42:15.713896Z",
-    #         "uri": "https://api.calendly.com/scheduled_events/ADNSLLJRPYESS47F/invitees/CHOW3WDOZOOE3AG5"
-    #       }
-    #     ]
-    #   }', headers: {})
+    # Calendly::Client.event_invitee
+    stub_request(:get, 'https://api.calendly.com/scheduled_events/ZZZZZZZZZZ/invitees')
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer authorization-token',
+          'Content-Type' => 'application/json',
+          'Host' => 'api.calendly.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: 200, body: '{
+        "collection": [
+          {
+            "cancel_url": "https://calendly.com/cancellations/CHOW3WDOZOOE3AG5",
+            "created_at": "2020-04-21T13:42:15.703243Z",
+            "email": "client@email.com",
+            "event": "https://api.calendly.com/scheduled_events/ADNSLLJRPYESS47F",
+            "first_name": null,
+            "last_name": null,
+            "name": "Odie",
+            "new_invitee": null,
+            "no_show": null,
+            "old_invitee": null,
+            "payment": null,
+            "questions_and_answers": [],
+            "reconfirmation": null,
+            "reschedule_url": "https://calendly.com/reschedulings/CHOW3WDOZOOE3AG5",
+            "rescheduled": false,
+            "status": "active",
+            "text_reminder_number": null,
+            "timezone": "Asia/Manila",
+            "tracking": {
+              "utm_campaign": null,
+              "utm_source": null,
+              "utm_medium": null,
+              "utm_content": null,
+              "utm_term": null,
+              "salesforce_uuid": null
+            },
+            "updated_at": "2020-04-21T13:42:15.713896Z",
+            "uri": "https://api.calendly.com/scheduled_events/ADNSLLJRPYESS47F/invitees/CHOW3WDOZOOE3AG5"
+          }
+        ]
+      }', headers: {})
+
+    # Calendly::Client.create_invitee_no_show
+    stub_request(:post, 'https://api.calendly.com/invitee_no_shows')
+      .with(
+        body: '{"invitee":"Invitee_link"}',
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer authorization-token',
+          'Content-Length' => '26',
+          'Content-Type' => 'application/json',
+          'Host' => 'api.calendly.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: 200, body: '{
+          "resource": {
+            "uri": "https://api.calendly.com/invitee_no_shows/no_show_link",
+            "invitee": "Invitee_link",
+            "created_at": "2019-01-02T03:04:05.678123Z"
+          }
+        }', headers: {})
+
+    # Calendly::Client.create_invitee_no_show invalid invitee_link
+    stub_request(:post, 'https://api.calendly.com/invitee_no_shows')
+      .with(
+        body: '{"invitee":"incorrect link"}',
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer authorization-token',
+          'Content-Length' => '28',
+          'Content-Type' => 'application/json',
+          'Host' => 'api.calendly.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: '404 Not Found', body: '{
+      "title": "Resource Not Found",
+      "message": "The server could not find the requested resource."
+    }', headers: {})
+
+    # Calendly::Client.delete_invitee_no_show
+    stub_request(:delete, 'https://api.calendly.com/invitee_no_shows/no_show_link')
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer authorization-token',
+          'Content-Length' => '0',
+          'Content-Type' => 'application/json',
+          'Host' => 'api.calendly.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: 204, body: '', headers: {})
+
+    # Calendly::Client.delete_invitee_no_show invalid no_show_link
+    stub_request(:delete, 'https://api.calendly.com/invitee_no_shows/invalid_show_link')
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer authorization-token',
+          'Content-Length' => '0',
+          'Content-Type' => 'application/json',
+          'Host' => 'api.calendly.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: '404 Not Found', body: '{
+        "title": "Resource Not Found",
+        "message": "The server could not find the requested resource."
+      }', headers: {})
   end
 end

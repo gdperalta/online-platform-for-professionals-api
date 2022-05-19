@@ -3,9 +3,14 @@ class ProfessionalsController < ApplicationController
 
   def index
     @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
-                                                       :bookings, :clients).all, items: 1)
+                                                       :bookings).all)
+    render json: ProfessionalSerializer.new(@professionals, pagination_links)
+  end
 
-    render json: ProfessionalSerializer.new(@professionals, pagination_links(@pagy))
+  def search
+    @pagy, @professionals = pagy(Professional.ransack(params[:q]).result)
+
+    render json: ProfessionalSerializer.new(@professionals, pagination_links)
   end
 
   def show
@@ -13,7 +18,9 @@ class ProfessionalsController < ApplicationController
   end
 
   def create
-    @professional = current_user.build_professional(professional_params)
+    @professional = Professional.new(professional_params)
+
+    authorize @professional
 
     if @professional.save
       render json: ProfessionalSerializer.new(@professional, set_options), status: :created, location: @professional
@@ -23,6 +30,8 @@ class ProfessionalsController < ApplicationController
   end
 
   def update
+    authorize @professional
+
     if @professional.update(professional_params)
       render json: ProfessionalSerializer.new(@professional, set_options)
     else
@@ -31,6 +40,8 @@ class ProfessionalsController < ApplicationController
   end
 
   def destroy
+    authorize @professional
+
     @professional.user.destroy
   end
 
@@ -42,7 +53,7 @@ class ProfessionalsController < ApplicationController
   end
 
   def professional_params
-    params.require(:professional).permit(:user, :field, :license_number, :office_address, :headline)
+    params.require(:professional).permit(:user_id, :field, :license_number, :office_address, :headline)
   end
 
   def set_options
@@ -51,15 +62,17 @@ class ProfessionalsController < ApplicationController
     }
   end
 
-  def pagination_links(pagy)
-    uri = request.base_url + request.path
-    {
-      links: {
-        self: "#{uri}?page=#{pagy.page}",
-        next: pagy.next.nil? ? nil : "#{uri}?page=#{pagy.next}",
-        prev: pagy.prev.nil? ? nil : "#{uri}?page=#{pagy.prev}",
-        last: "#{uri}?page=#{pagy.last}"
-      }
-    }
+  def pagination_links
+    links = { self: request.original_url }
+    headers = pagy_headers_merge(@pagy)
+
+    headers['Link'].split(', ').each do |link|
+      url = link[/<(.*?)>/, 1]
+      page = link[/"(.*)"/, 1]
+
+      links[page] = url
+    end
+
+    { links: links }
   end
 end

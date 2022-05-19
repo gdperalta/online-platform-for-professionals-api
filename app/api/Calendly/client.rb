@@ -1,18 +1,9 @@
 module Calendly
   class Client
-    attr_reader :organization_uri, :user_uri
-
-    def initialize(response)
-      @response = response
-      @organization_uri = response[:data]['resource']['current_organization']
-      @user_uri = response[:data]['resource']['uri']
-    end
-
     def self.user(authorization)
-      response = Request.call(http_method: 'get',
-                              endpoint: '/users/me',
-                              authorization: authorization)
-      new(response)
+      Request.call(http_method: 'get',
+                   endpoint: '/users/me',
+                   authorization: authorization)
     end
 
     def self.events(authorization, params: {})
