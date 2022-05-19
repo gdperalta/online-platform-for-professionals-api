@@ -24,11 +24,11 @@ class ConnectionsController < ApplicationController
   end
 
   def subscribed_to
-    render json: ClientSerializer.new(@user.subscribed_to, set_options)
+    render json: ProfessionalSerializer.new(@user.subscribed_to, set_options)
   end
 
   def my_professionals
-    render json: ClientSerializer.new(@user.my_professionals, set_options)
+    render json: ProfessionalSerializer.new(@user.my_professionals, set_options)
   end
 
   def destroy
