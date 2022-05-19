@@ -1,11 +1,10 @@
 class BookingsController < ApplicationController
-  before_action :set_professional, only: %i[index create]
+  before_action :set_professional, only: %i[create]
   before_action :set_booking, only: %i[show update destroy]
 
   def index
-    authorize @professional, policy_class: BookingPolicy
-
-    @bookings = @professional.event_bookings(params[:status])
+    @user = current_user.professional || current_user.client
+    @bookings = @user.event_bookings(params[:status])
 
     render json: @bookings
   end
