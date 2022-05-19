@@ -24,6 +24,10 @@ class User < ApplicationRecord
     build_client
   end
 
+  def admin?
+    role == 'admin'
+  end
+
   def professional?
     role == 'professional'
   end
