@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   resources :connections, only: %i[create destroy]
   resources :clients, only: %i[index show destroy]
   resources :bookings, except: :create
-
   resources :professionals do
     post '/bookings', to: 'bookings#create', as: 'bookings'
     resources :reviews
@@ -18,7 +17,9 @@ Rails.application.routes.draw do
     end
   end
   patch '/users/:id/approve', to: 'users#approve', as: 'approve_user'
-
+  get '/fields', to: 'fields#index'
+  get '/cities', to: 'locations#cities'
+  get '/regions', to: 'locations#regions'
   devise_for :users,
              defaults: { format: :json },
              path: '',
