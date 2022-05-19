@@ -1,10 +1,6 @@
 class BookingPolicy < ApplicationPolicy
-  def index?
-    user.professional? && user == record.user
-  end
-
   def show?
-    user.professional? && user == record.professional.user
+    user == record.client.user || user == record.professional.user
   end
 
   def create?
