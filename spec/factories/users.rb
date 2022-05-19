@@ -20,11 +20,11 @@ FactoryBot.define do
       email { 'client@email.com' }
       role { 'client' }
 
-      after(:create) do |user|
-        review = Review.new(attributes_for(:review))
-        review.client_id = user.client.id
-        review.save
-      end
+      # after(:create) do |user|
+      #   review = Review.new(attributes_for(:review))
+      #   review.client_id = user.client.id
+      #   review.save
+      # end
 
       # after(:create) do |user|
       #   connection = Connection.new(
