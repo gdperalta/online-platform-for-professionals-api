@@ -67,6 +67,7 @@ RSpec.configure do |config|
   WebMock.disable_net_connect!(allow_localhost: true)
 
   config.before(:each) do
+    # Calendly::Client.user
     stub_request(:get, 'https://api.calendly.com/users/me')
       .with(
         headers: {
@@ -93,6 +94,7 @@ RSpec.configure do |config|
       }
     }', headers: {})
 
+    # Calendly::Client.user new token
     stub_request(:get, 'https://api.calendly.com/users/me')
       .with(
         headers: {
@@ -119,6 +121,7 @@ RSpec.configure do |config|
       }
     }', headers: {})
 
+    # Calendly::Client.events
     stub_request(:get, 'https://api.calendly.com/scheduled_events?count=5&invitee_email=client@email.com&min_start_time=2022-05-19%2000:00:00%20%2B0800&status=active&user=https://api.calendly.com/users/HHHHHHHHHH')
       .with(
         headers: {
@@ -193,6 +196,7 @@ RSpec.configure do |config|
           }
         }', headers: {})
 
+    # Calendly::Client.event_invitee
     stub_request(:get, 'https://api.calendly.com/scheduled_events/ZZZZZZZZZZ/invitees')
       .with(
         headers: {
@@ -239,6 +243,7 @@ RSpec.configure do |config|
         ]
       }', headers: {})
 
+    # Calendly::Client.create_invitee_no_show
     stub_request(:post, 'https://api.calendly.com/invitee_no_shows')
       .with(
         body: '{"invitee":"Invitee_link"}',
@@ -260,6 +265,26 @@ RSpec.configure do |config|
           }
         }', headers: {})
 
+    # Calendly::Client.create_invitee_no_show invalid invitee_link
+    stub_request(:post, 'https://api.calendly.com/invitee_no_shows')
+      .with(
+        body: '{"invitee":"incorrect link"}',
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer authorization-token',
+          'Content-Length' => '28',
+          'Content-Type' => 'application/json',
+          'Host' => 'api.calendly.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: '404 Not Found', body: '{
+      "title": "Resource Not Found",
+      "message": "The server could not find the requested resource."
+    }', headers: {})
+
+    # Calendly::Client.delete_invitee_no_show
     stub_request(:delete, 'https://api.calendly.com/invitee_no_shows/no_show_link')
       .with(
         headers: {
@@ -273,5 +298,23 @@ RSpec.configure do |config|
         }
       )
       .to_return(status: 204, body: '', headers: {})
+
+    # Calendly::Client.delete_invitee_no_show invalid no_show_link
+    stub_request(:delete, 'https://api.calendly.com/invitee_no_shows/invalid_show_link')
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer authorization-token',
+          'Content-Length' => '0',
+          'Content-Type' => 'application/json',
+          'Host' => 'api.calendly.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: '404 Not Found', body: '{
+        "title": "Resource Not Found",
+        "message": "The server could not find the requested resource."
+      }', headers: {})
   end
 end
