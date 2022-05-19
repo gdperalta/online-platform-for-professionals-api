@@ -12,6 +12,7 @@ class Professional < ApplicationRecord
   validates :user_id, uniqueness: true
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
 
+  # TODO: For refactoring
   def event_bookings(status)
     events = []
     @status = status
@@ -25,7 +26,7 @@ class Professional < ApplicationRecord
   private
 
   def set_parameters(client)
-    parameters = { user: calendly_token.user,
+    parameters = { user: calendly_token.user_uri,
                    invitee_email: client.user.email,
                    count: 5 }
 
