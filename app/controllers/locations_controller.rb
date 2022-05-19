@@ -1,4 +1,6 @@
 class LocationsController < ApplicationController
+  skip_before_action :authenticate_user!
+
   def cities
     @cities = PHLocations::Client.getCities
 
