@@ -4,7 +4,7 @@ class ClientsController < ApplicationController
   def index
     @pagy, @clients = pagy(Client.includes(:user, :reviews, :bookings).all)
 
-    render json: ClientSerializer.new(@clients, pagination_links(@pagy))
+    render json: ClientSerializer.new(@clients, pagination_links)
   end
 
   def show
@@ -28,15 +28,17 @@ class ClientsController < ApplicationController
     }
   end
 
-  def pagination_links(pagy)
-    uri = request.base_url + request.path
-    {
-      links: {
-        self: "#{uri}?page=#{pagy.page}",
-        next: pagy.next.nil? ? nil : "#{uri}?page=#{pagy.next}",
-        prev: pagy.prev.nil? ? nil : "#{uri}?page=#{pagy.prev}",
-        last: "#{uri}?page=#{pagy.last}"
-      }
-    }
+  def pagination_links
+    links = { self: request.original_url }
+    headers = pagy_headers_merge(@pagy)
+
+    headers['Link'].split(', ').each do |link|
+      url = link[/<(.*?)>/, 1]
+      page = link[/"(.*)"/, 1]
+
+      links[page] = url
+    end
+
+    { links: links }
   end
 end
