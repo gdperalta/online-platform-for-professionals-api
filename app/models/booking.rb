@@ -28,7 +28,7 @@ class Booking < ApplicationRecord
   end
 
   def cancel_marked_client_no_show
-    return unless client_showed_up_changed? && client_showed_up
+    return unless changed_attributes['client_showed_up'] == false && client_showed_up
 
     response = Calendly::Client.delete_invitee_no_show(professional.calendly_token.authorization, no_show_link)
 
