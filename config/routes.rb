@@ -15,6 +15,8 @@ Rails.application.routes.draw do
       match 'search' => 'professionals#search', via: %i[get post], as: :search
     end
   end
+  patch '/users/:id/approve', to: 'users#approve'
+
   devise_for :users,
              defaults: { format: :json },
              path: '',
