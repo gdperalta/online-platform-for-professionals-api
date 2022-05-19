@@ -19,15 +19,6 @@ FactoryBot.define do
       contact_number { '9151239876' }
       email { 'client@email.com' }
       role { 'client' }
-
-      # after(:create) do |user|
-      #   connection = Connection.new(
-      #     professional_id: 1,
-      #     client_id: user.client.id,
-      #     classification: 'subscription'
-      #   )
-      #   connection.save
-      # end
     end
 
     trait :no_association do
