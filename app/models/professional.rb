@@ -12,6 +12,10 @@ class Professional < ApplicationRecord
   validates :user_id, uniqueness: true
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
 
+  def average_rating
+    reviews.average(:rating)
+  end
+
   # TODO: For refactoring in user level
   def event_bookings(status)
     events = []

@@ -7,7 +7,11 @@ class ProfessionalSerializer
   has_many :services
   has_many :reviews
   has_many :bookings
-  # has_many :subscribers
-  # has_many :clients
   has_one :calendly_token
+
+  meta do |professional|
+    {
+      averageRating: professional.average_rating
+    }
+  end
 end
