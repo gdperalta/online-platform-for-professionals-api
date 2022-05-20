@@ -12,7 +12,7 @@ class Professional < ApplicationRecord
   validates :user_id, uniqueness: true
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
 
-  # TODO: For refactoring
+  # TODO: For refactoring in user level
   def event_bookings(status)
     events = []
     @status = status
