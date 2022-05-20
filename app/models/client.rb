@@ -7,7 +7,12 @@ class Client < ApplicationRecord
   has_many :professional_list, -> { where classification: 'client_list' }, class_name: 'Connection', dependent: :destroy
   has_many :my_professionals, through: :professional_list, source: :professional
 
-  # TODO: For refactoring
+  # TODO: To be used for tracking user no shows and potential blacklist
+  def event_no_show
+    bookings.where(client_showed_up: false).length
+  end
+
+  # TODO: For refactoring in user level
   def event_bookings(status)
     events = []
     @status = status
