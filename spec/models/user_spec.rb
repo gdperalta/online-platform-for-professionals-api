@@ -73,5 +73,23 @@ RSpec.describe User, type: :model do
         expect(user.errors[:role]).to include('cannot be changed after account creation')
       end
     end
+
+    context 'city' do
+      it 'is invalid if blank' do
+        user.city = ''
+        expect(user).to_not be_valid
+        expect(user.errors.to_hash.keys).to include(:city)
+        expect(user.errors[:city]).to include("can't be blank")
+      end
+    end
+
+    context 'region' do
+      it 'is invalid if blank' do
+        user.region = ''
+        expect(user).to_not be_valid
+        expect(user.errors.to_hash.keys).to include(:region)
+        expect(user.errors[:region]).to include("can't be blank")
+      end
+    end
   end
 end
