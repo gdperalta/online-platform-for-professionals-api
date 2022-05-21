@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_18_101329) do
+ActiveRecord::Schema.define(version: 2022_05_21_040638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 2022_05_18_101329) do
     t.string "organization_uri"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "scheduling_url"
     t.index ["professional_id"], name: "index_calendly_tokens_on_professional_id"
   end
 

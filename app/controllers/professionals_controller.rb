@@ -3,12 +3,13 @@ class ProfessionalsController < ApplicationController
 
   def index
     @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
-                                                       :bookings).all)
+                                                       :bookings, :subscribers, :clientele).all)
     render json: ProfessionalSerializer.new(@professionals, pagination_links)
   end
 
   def search
-    @pagy, @professionals = pagy(Professional.ransack(params[:q]).result)
+    @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
+                                                       :bookings, :subscribers, :clientele).ransack(params[:q]).result)
 
     render json: ProfessionalSerializer.new(@professionals, pagination_links)
   end

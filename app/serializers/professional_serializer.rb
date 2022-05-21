@@ -7,6 +7,8 @@ class ProfessionalSerializer
   has_many :services
   has_many :reviews
   has_many :bookings
+  has_many :subscribers, serializer: :client
+  has_many :clientele, serializer: :client
   has_one :calendly_token
 
   meta do |professional|

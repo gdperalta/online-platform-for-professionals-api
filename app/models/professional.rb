@@ -19,10 +19,17 @@ class Professional < ApplicationRecord
   # TODO: For refactoring in user level
   def event_bookings(status)
     events = []
+
+    return events if calendly_token.nil?
+
     @status = status
     subscribers.each do |subscriber|
       params = set_parameters(subscriber)
-      events << handle_event(params)
+
+      response = handle_event(params)
+      next if response[:data].empty?
+
+      events << response
     end
     events
   end

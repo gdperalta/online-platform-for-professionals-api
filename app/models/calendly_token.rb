@@ -12,6 +12,7 @@ class CalendlyToken < ApplicationRecord
     if response[:code] < 300
       self.user_uri = response[:data]['resource']['uri']
       self.organization_uri = response[:data]['resource']['current_organization']
+      self.scheduling_url = response[:data]['resource']['scheduling_url']
     else
       errors.add(:authorization, 'unauthorized! Please check calendly token.')
     end
