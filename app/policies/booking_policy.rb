@@ -1,6 +1,6 @@
 class BookingPolicy < ApplicationPolicy
   def show?
-    user == record.client.user || user == record.professional.user
+    user == record.client.try(:user) || user == record.professional.try(:user)
   end
 
   def create?

@@ -14,17 +14,18 @@ class Client < ApplicationRecord
 
   # TODO: For refactoring in user level
   def event_bookings(status)
-    events = []
+    @events = []
     @status = status
+
     subscribed_to.each do |professional|
       @professional = professional
 
       next if professional.calendly_token.nil?
 
       params = set_parameters(professional)
-      events << handle_event(params)
+      handle_event(params)
     end
-    events
+    @events
   end
 
   private
@@ -32,7 +33,7 @@ class Client < ApplicationRecord
   def set_parameters(professional)
     parameters = { user: professional.calendly_token.user_uri,
                    invitee_email: user.email,
-                   count: 5 }
+                   count: 30 }
 
     case @status
     when 'active'
@@ -50,24 +51,13 @@ class Client < ApplicationRecord
 
   def handle_event(params)
     response = Calendly::Client.events(@professional.calendly_token.authorization, params: params)
+    events_list = response[:data]['collection']
 
-    result = format_response(response)
+    return if events_list.empty?
 
-    response[:data]['collection'].each do |event|
-      result[:data] << event_data(event)
+    events_list.each do |event|
+      @events << event_data(event)
     end
-
-    result
-  end
-
-  def format_response(response)
-    {
-      links: {
-        next: response[:data]['pagination']['next_page_token'],
-        previous: response[:data]['pagination']['previous_page_token']
-      },
-      data: []
-    }
   end
 
   def event_data(event)
