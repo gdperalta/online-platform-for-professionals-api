@@ -11,7 +11,7 @@ class Professional < ApplicationRecord
   has_one :calendly_token, dependent: :destroy
   validates :user_id, uniqueness: true
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
-  # validates :name, presence: true, inclusion: { in: %w[:fields_names(ENV_fields)] }
+  validates :field, presence: true, inclusion: { in: Field.pluck(:name), message: '%<value>s is not a valid field' }
 
   def full_name
     "#{user.first_name} #{user.last_name}"
