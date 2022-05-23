@@ -8,21 +8,20 @@ class User < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :contact_number, presence: true, uniqueness: true, length: { is: 10 }
-  validates :city, presence: true, inclusion: {in: %w[:city_names(PHLocations::Client.getCities)]}
-  validates :region, presence: true, inclusion: {in: %w[:region_names(PHLocations::Client.getRegions)]}
+  # validates :city, presence: true, inclusion: {in: %w[:city_names(PHLocations::Client.getCities)]}
+  # validates :region, presence: true, inclusion: {in: %w[:region_names(PHLocations::Client.getRegions)]}
   validates :role, presence: true,
                    inclusion: { in: %w[professional client admin], message: '%<value>s is not a valid role' }
   validate :role_not_changed, on: :update
 
   def city_names(parsed_json)
-   names = parsed_json[:data].map {|city| city["name"]}
-   names
+    parsed_json[:data].map { |city| city['name'] }
   end
-  
+
   def region_names(parsed_json)
-    names = parsed_json[:data].map {|region| region["name"]}
-    names
+    parsed_json[:data].map { |region| region['name'] }
   end
+
   def role_not_changed
     errors.add(:role, 'cannot be changed after account creation') if role_changed?
   end
