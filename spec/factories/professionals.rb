@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :professional do
     id { 1 }
-    field { 'Electrical Engineer' }
+    field { 'HBRL' }
     license_number { '0012345' }
     office_address { 'Office Address' }
     headline { 'MyHeadline' }
@@ -24,5 +24,6 @@ FactoryBot.define do
         professional.build_calendly_token(authorization: 'authorization-token')
       end
     end
+
   end
 end

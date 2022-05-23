@@ -3,8 +3,8 @@ FactoryBot.define do
     password { 'password' }
     first_name { 'John' }
     last_name { 'Cruz' }
-    city { 'Manila' }
-    region { 'NCR' }
+    city { 'CITY OF MALABON' }
+    region { 'NATIONAL CAPITAL REGION (NCR)' }
     confirmed_at { Time.now }
 
     trait :professional do

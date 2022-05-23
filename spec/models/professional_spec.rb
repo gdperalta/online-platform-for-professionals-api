@@ -40,5 +40,20 @@ RSpec.describe Professional, type: :model do
         expect(professional.errors[:license_number]).to include(/has already been taken/)
       end
     end
+    context 'field' do
+      it 'is invalid if blank' do
+        professional.field = ''
+        expect(professional).to_not be_valid
+        expect(professional.errors.to_hash.keys).to include(:field)
+        expect(professional.errors[:field]).to include("can't be blank")
+      end
+
+      it 'is an invalid field' do
+        professional.field = 'OddJobs'
+        expect(professional).to_not be_valid
+        expect(professional.errors.to_hash.keys).to include(:field)
+        expect(professional.errors[:field]).to include('OddJobs is not a valid field')
+      end
+    end
   end
 end

@@ -1,5 +1,5 @@
-FactoryBot.define do
-  factory :field do
-    name { "MyString" }
-  end
-end
+# FactoryBot.define do
+#   factory :field do
+#     name { "MyString" }
+#   end
+# end

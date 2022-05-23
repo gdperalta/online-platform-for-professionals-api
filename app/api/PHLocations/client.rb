@@ -1,7 +1,9 @@
 module PHLocations
     class Client
         def self.getCities
-            response = Request.call(http_method: 'get', endpoint: 'cities')
+            a = Request.call(http_method: 'get', endpoint: 'cities')
+            b = Request.call(http_method: 'get', endpoint: 'cities?page=2')
+            response = {a,**b}
         end
 
         def self.getRegions

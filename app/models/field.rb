@@ -1,11 +1,9 @@
 class Field < ApplicationRecord
-    validates :name, presence: true
     
-    def fields_names(fields)
-        names = []
-        fields.map do |field|
-            names.push(field.name)
+    
+    def self.fields_names
+        Field.all.map do |field|
+            field[:name]
         end
-        names
     end
 end

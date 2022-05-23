@@ -1,6 +1,65 @@
-# README
+# Online Platform for Professionals
 
-# **API**
+A simple application platform where clients can search and book appointments with professionals.
+
+## Built with:
+- Ruby 3.0
+- Rails 6.1.5.1
+- PostgreSQL 12.10
+
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+- Clone the repository and navigate to main app directory
+
+	``` bash
+	git clone https://github.com/gdperalta/online-platform-for-professionals-api.git
+	cd online-platform-for-professionals-api
+	```
+
+- Install Rails API dependencies
+	``` Ruby
+		# For handling Cross-Origin Resource Sharing (CORS)
+		gem 'rack-cors'
+		# For user authentication
+		gem 'devise', '~> 4.8.1'
+		# For authorization token
+		gem 'devise-jwt', '~> 0.9.0'
+		# For json api format
+		gem 'jsonapi-serializer', '~> 2.2.0'
+		# For pagination
+		gem 'pagy', '~> 5.10'
+		# For user authorization
+		gem 'pundit', '~> 2.2.0'
+		# For searches
+		gem 'ransack', '~> 3.0.1'
+		# For request of external API
+		gem 'rest-client', '~> 2.1.0'
+		#For tests and development
+		gem 'factory_bot_rails', '~> 6.2.0'
+		gem 'rspec-rails', '~> 5.1.1'
+		gem 'webmock', '~> 3.14.0'
+	```
+
+	Then run the command
+	``` bash
+		bundle install
+	```
+- Initialize the database
+	``` bash
+		rails db:create
+		rails db:migrate
+		rails db:seed
+	```
+- Run the server
+	``` bash
+		rails s
+	```
+
+
+## **API**
 
 ## **Session**
 
