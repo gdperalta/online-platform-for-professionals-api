@@ -65,6 +65,7 @@ class Client < ApplicationRecord
     response = Calendly::Client.event_invitee(@professional.calendly_token.authorization, event_uuid)
     event['invitee_uri'] = response['uri']
     event['invitee_email'] = response['email']
+    event['professional_name'] = @professional.full_name
 
     {
       id: event_uuid,
