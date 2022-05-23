@@ -4,9 +4,11 @@ class BookingsController < ApplicationController
 
   def index
     @user = current_user.professional || current_user.client
-    @bookings = @user.event_bookings(params[:status])
 
-    render json: @bookings
+    event_list = @user.event_bookings(params[:status])
+    @pagy, @bookings = pagy_array(event_list.sort_by { |e| e[:attributes]['start_time'] })
+
+    render json: { data: @bookings, links: pagination_links }
   end
 
   def show
@@ -60,5 +62,19 @@ class BookingsController < ApplicationController
                                     :finished, :start_time, :end_time,
                                     :client_showed_up, :no_show_link, :invitee_link,
                                     canceled_bookings_attributes: [:reason])
+  end
+
+  def pagination_links
+    links = { self: request.original_url }
+    headers = pagy_headers_merge(@pagy)
+
+    headers['Link'].split(', ').each do |link|
+      url = link[/<(.*?)>/, 1]
+      page = link[/"(.*)"/, 1]
+
+      links[page] = url
+    end
+
+    links
   end
 end

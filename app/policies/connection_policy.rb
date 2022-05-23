@@ -1,9 +1,9 @@
 class ConnectionPolicy < ApplicationPolicy
   def create?
-    user == record.professional.user || user == record.client.user
+    user == record.professional.try(:user) || user == record.client.try(:user)
   end
 
   def destroy?
-    user == record.professional.user || user == record.client.user
+    user == record.professional.try(:user) || user == record.client.try(:user)
   end
 end

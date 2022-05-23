@@ -8,15 +8,31 @@ class User < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :contact_number, presence: true, uniqueness: true, length: { is: 10 }
+<<<<<<< HEAD
   VALID_CITIES = PHLocations::Client.getCities[:data].map {|city| city["name"]}
   validates :city, presence: true, inclusion: {in: VALID_CITIES, message: '%<value>s is not a valid city'}
   VALID_REGIONS = PHLocations::Client.getRegions[:data].map {|region| region["name"]}
   validates :region, presence: true, inclusion: {in: VALID_REGIONS, message: '%<value>s is not a valid region'}
+=======
+  # validates :city, presence: true, inclusion: {in: %w[:city_names(PHLocations::Client.getCities)]}
+  # validates :region, presence: true, inclusion: {in: %w[:region_names(PHLocations::Client.getRegions)]}
+>>>>>>> 47c4fa014ae5e2dae2661a56fdc780f8588496d3
   validates :role, presence: true,
                    inclusion: { in: %w[professional client admin], message: '%<value>s is not a valid role' }
   validate :role_not_changed, on: :update
 
+<<<<<<< HEAD
   
+=======
+  def city_names(parsed_json)
+    parsed_json[:data].map { |city| city['name'] }
+  end
+
+  def region_names(parsed_json)
+    parsed_json[:data].map { |region| region['name'] }
+  end
+
+>>>>>>> 47c4fa014ae5e2dae2661a56fdc780f8588496d3
   def role_not_changed
     errors.add(:role, 'cannot be changed after account creation') if role_changed?
   end

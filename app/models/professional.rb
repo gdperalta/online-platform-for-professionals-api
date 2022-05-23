@@ -11,27 +11,33 @@ class Professional < ApplicationRecord
   has_one :calendly_token, dependent: :destroy
   validates :user_id, uniqueness: true
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
+<<<<<<< HEAD
   validates :field, presence: true, inclusion: {in: Field.pluck(:name),message: '%<value>s is not a valid field'}
+=======
+  # validates :name, presence: true, inclusion: { in: %w[:fields_names(ENV_fields)] }
+
+  def full_name
+    "#{user.first_name} #{user.last_name}"
+  end
+
+>>>>>>> 47c4fa014ae5e2dae2661a56fdc780f8588496d3
   def average_rating
     reviews.average(:rating)
   end
 
   # TODO: For refactoring in user level
   def event_bookings(status)
-    events = []
+    @events = []
 
     return events if calendly_token.nil?
 
     @status = status
+
     subscribers.each do |subscriber|
       params = set_parameters(subscriber)
-
-      response = handle_event(params)
-      next if response[:data].empty?
-
-      events << response
+      handle_event(params)
     end
-    events
+    @events
   end
 
   private
@@ -39,13 +45,13 @@ class Professional < ApplicationRecord
   def set_parameters(client)
     parameters = { user: calendly_token.user_uri,
                    invitee_email: client.user.email,
-                   count: 5 }
+                   count: 30 }
 
     case @status
     when 'active'
       parameters[:status] = 'active'
       parameters[:min_start_time] = Time.now
-    when 'finished'
+    when 'pending', 'finished'
       parameters[:status] = 'active'
       parameters[:max_start_time] = Time.now
     when 'canceled'
@@ -57,36 +63,38 @@ class Professional < ApplicationRecord
 
   def handle_event(params)
     response = Calendly::Client.events(calendly_token.authorization, params: params)
+    events_list = response[:data]['collection']
 
-    result = format_response(response)
+    return if events_list.empty?
 
-    response[:data]['collection'].each do |event|
-      result[:data] << event_data(event)
+    events_list.each do |event|
+      event_exists = event_exists?(event)
+
+      next if @status == 'pending' && event_exists.present?
+      next if @status == 'finished' && event_exists.nil?
+
+      @events << event_data(event)
     end
-
-    result
-  end
-
-  def format_response(response)
-    {
-      links: {
-        next: response[:data]['pagination']['next_page_token'],
-        previous: response[:data]['pagination']['previous_page_token']
-      },
-      data: []
-    }
   end
 
   def event_data(event)
-    event_uuid = event['uri'].split('events/').last
-    response = Calendly::Client.event_invitee(calendly_token.authorization, event_uuid)
+    response = Calendly::Client.event_invitee(calendly_token.authorization, event_uuid(event))
     event['invitee_uri'] = response['uri']
     event['invitee_email'] = response['email']
+    event['invite_name'] = response['name']
 
     {
-      id: event_uuid,
+      id: event_uuid(event),
       type: "#{@status}_events",
       attributes: event.except('created_at', 'event_guests', 'event_memberships', 'updated_at')
     }
+  end
+
+  def event_exists?(event)
+    Booking.find_by(event_uuid: event_uuid(event))
+  end
+
+  def event_uuid(event)
+    event['uri'].split('events/').last
   end
 end
