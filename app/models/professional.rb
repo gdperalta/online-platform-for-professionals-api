@@ -11,7 +11,12 @@ class Professional < ApplicationRecord
   has_one :calendly_token, dependent: :destroy
   validates :user_id, uniqueness: true
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
-  validates :name, presence: true, inclusion: {in: %w[:fields_names(ENV_fields)]}
+  validates :name, presence: true, inclusion: { in: %w[:fields_names(ENV_fields)] }
+
+  def full_name
+    "#{user.first_name} #{user.last_name}"
+  end
+
   def average_rating
     reviews.average(:rating)
   end
@@ -68,6 +73,7 @@ class Professional < ApplicationRecord
     response = Calendly::Client.event_invitee(calendly_token.authorization, event_uuid)
     event['invitee_uri'] = response['uri']
     event['invitee_email'] = response['email']
+    event['invite_name'] = response['name']
 
     {
       id: event_uuid,
