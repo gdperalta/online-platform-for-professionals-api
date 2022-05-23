@@ -61,16 +61,19 @@ class Client < ApplicationRecord
   end
 
   def event_data(event)
-    event_uuid = event['uri'].split('events/').last
-    response = Calendly::Client.event_invitee(@professional.calendly_token.authorization, event_uuid)
+    response = Calendly::Client.event_invitee(@professional.calendly_token.authorization, event_uuid(event))
     event['invitee_uri'] = response['uri']
     event['invitee_email'] = response['email']
     event['professional_name'] = @professional.full_name
 
     {
-      id: event_uuid,
+      id: event_uuid(event),
       type: "#{@status}_events",
       attributes: event.except('created_at', 'event_guests', 'event_memberships', 'updated_at')
     }
+  end
+
+  def event_uuid(event)
+    event['uri'].split('events/').last
   end
 end
