@@ -57,6 +57,8 @@ These instructions will get you a copy of the project up and running on your loc
 	``` bash
 		rails s
 	```
+## ERD
+<img src="./ERD.png">
 
 ## Running the tests
 Used [RSpec](https://rspec.info) for TDD
@@ -96,8 +98,7 @@ Push to Heroku production remote:
 	git push heroku
 ```
 
-## ERD
-	<img title="erd" alt = "ERD" src = "./ERD.png">
+
 
 ## Environments
 API Endpoints documentation: https://app.swaggerhub.com/apis/gdperalta924/OPPA/1
