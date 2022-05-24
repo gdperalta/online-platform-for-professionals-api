@@ -81,6 +81,13 @@ RSpec.describe User, type: :model do
         expect(user.errors.to_hash.keys).to include(:city)
         expect(user.errors[:city]).to include("can't be blank")
       end
+
+      it 'is an invalid city' do
+        user.city = 'STAR CITY'
+        expect(user).to_not be_valid
+        expect(user.errors.to_hash.keys).to include(:city)
+        expect(user.errors[:city]).to include('STAR CITY is not a valid city')
+      end
     end
 
     context 'region' do
@@ -89,6 +96,13 @@ RSpec.describe User, type: :model do
         expect(user).to_not be_valid
         expect(user.errors.to_hash.keys).to include(:region)
         expect(user.errors[:region]).to include("can't be blank")
+      end
+
+      it 'is an invalid region' do
+        user.region = 'NEW YORK'
+        expect(user).to_not be_valid
+        expect(user.errors.to_hash.keys).to include(:region)
+        expect(user.errors[:region]).to include('NEW YORK is not a valid region')
       end
     end
   end

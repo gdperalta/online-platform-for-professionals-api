@@ -24,5 +24,6 @@ FactoryBot.define do
         professional.build_calendly_token(authorization: 'authorization-token')
       end
     end
+
   end
 end
