@@ -4,12 +4,12 @@ class LocationsController < ApplicationController
   def cities
     @cities = PHLocations::Client.getCities
 
-    render json: @cities[:data]
+    render json: @cities[:data], status: 200
   end
 
   def regions
     @regions = PHLocations::Client.getRegions
 
-    render json: @regions[:data]
+    render json: @regions[:data], status: 200
   end
 end

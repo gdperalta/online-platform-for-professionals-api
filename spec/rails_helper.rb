@@ -64,6 +64,7 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   config.before(:suite) do
     Rails.application.load_seed # loading seeds
+
   end
   # Disable net connection during tests
   WebMock.disable_net_connect!(allow_localhost: true)
@@ -318,5 +319,38 @@ RSpec.configure do |config|
         "title": "Resource Not Found",
         "message": "The server could not find the requested resource."
       }', headers: {})
+
+      stub_request(:get, "https://ph-locations-api.buonzz.com/v1/cities").
+         with(
+           headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'Host'=>'ph-locations-api.buonzz.com',
+          'User-Agent'=>'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+           }).
+         to_return(status: 200, body: '{"id":"175101","name":"ABRA DE ILOG","region_code":"17","province_code":"1751","href":"http://127.0.0.1:3344/v1/cities/175101"}', headers: {})
+
+      stub_request(:get, "https://ph-locations-api.buonzz.com/v1/cities?page=2").
+         with(
+           headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'Host'=>'ph-locations-api.buonzz.com',
+          'User-Agent'=>'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+           }).
+         to_return(status: 200, body: '{"id":"175101","name":"ABRA DE ILOG","region_code":"17","province_code":"1751","href":"http://127.0.0.1:3344/v1/cities/175101"}', headers: {})
+
+      stub_request(:get, "https://ph-locations-api.buonzz.com/v1/regions").
+         with(
+           headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'Host'=>'ph-locations-api.buonzz.com',
+          'User-Agent'=>'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+           }).
+         to_return(status: 200, body: '{"id":"15","name":"AUTONOMOUS REGION IN MUSLIM MINDANAO (ARMM)","href":"http://127.0.0.1:3344/v1/regions/15"}', headers: {})
   end
 end

@@ -4,6 +4,6 @@ class FieldsController < ApplicationController
   def index
     @fields = Field.all
 
-    render json: @fields
+    render json: @fields, status: 200
   end
 end

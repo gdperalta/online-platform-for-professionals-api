@@ -58,475 +58,59 @@ These instructions will get you a copy of the project up and running on your loc
 		rails s
 	```
 
-
-## **API**
-
-## **Session**
-
-### _Post /login_
-
-**Request**
-
-Body:
-
-- email
-  - email of the user to be logged in
-- password
-  - password of the user to be logged in
-
-**Sample Response**
-
-```json
-{
-	"data": {
-		"id": "2",
-		"type": "personalDetails",
-		"attributes": {
-			"email": "test@email.com",
-			"firstName": "John",
-			"lastName": "Lloyd",
-			"contactNumber": "9151234567",
-			"city": "Manila",
-			"region": "NCR",
-			"role": "professional"
-		},
-		"relationships": {
-			"professional": {
-				"data": {
-					"id": "1",
-					"type": "professional"
-				}
-			}
-		}
-	},
-	"included": [
-		{
-			"id": "1",
-			"type": "professional",
-			"attributes": {
-				"field": "Programmer",
-				"licenseNumber": "0012345",
-				"officeAddress": null,
-				"headline": null
-			},
-			"relationships": {
-				"user": {
-					"data": {
-						"id": "2",
-						"type": "personalDetails"
-					}
-				},
-				"workPortfolios": {
-					"data": [
-						{
-							"id": "1",
-							"type": "workPortfolio"
-						}
-					]
-				},
-				"services": {
-					"data": [
-						{
-							"id": "1",
-							"type": "service"
-						}
-					]
-				},
-				"reviews": {
-					"data": [
-						{
-							"id": "1",
-							"type": "review"
-						},
-						{
-							"id": "2",
-							"type": "review"
-						},
-						{
-							"id": "3",
-							"type": "review"
-						},
-						{
-							"id": "4",
-							"type": "review"
-						}
-					]
-				},
-				"calendlyToken": {
-					"data": {
-						"id": "2",
-						"type": "calendlyToken"
-					}
-				}
-			}
-		}
-	]
-}
+## Running the tests
+Used [RSpec](https://rspec.info) for TDD
+```bash
+	rspec spec --format documentation
 ```
 
-## **Professional**
+## Deployment
 
-### _Get /professionals_
+Add heroku remotes
 
-**Request**
+Using [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli):
 
-Headers:
+```bash
+	heroku git:remote -a project
+	heroku git:remote --remote heroku-staging -a project-staging
+```
+### With Heroku pipeline (recommended)
 
-- Authorization
-  - _Authorization token from login response headers_
+Push to Heroku staging remote:
 
-**Sample Response**
-
-```json
-{
-	"data": [
-		{
-			"id": "1",
-			"type": "professional",
-			"attributes": {
-				"field": "Programmer",
-				"licenseNumber": "0012345",
-				"officeAddress": null,
-				"headline": null
-			},
-			"relationships": {
-				"user": {
-					"data": {
-						"id": "2",
-						"type": "personalDetails"
-					}
-				},
-				"workPortfolios": {
-					"data": [
-						{
-							"id": "1",
-							"type": "workPortfolio"
-						}
-					]
-				},
-				"services": {
-					"data": [
-						{
-							"id": "1",
-							"type": "service"
-						}
-					]
-				},
-				"reviews": {
-					"data": [
-						{
-							"id": "1",
-							"type": "review"
-						},
-						{
-							"id": "2",
-							"type": "review"
-						},
-						{
-							"id": "3",
-							"type": "review"
-						}
-					]
-				}
-			}
-		}
-	],
-	"included": [
-		{
-			"id": "2",
-			"type": "personalDetails",
-			"attributes": {
-				"email": "test@email.com",
-				"firstName": "John",
-				"lastName": "Lloyd",
-				"contactNumber": "9151234567",
-				"city": "Manila",
-				"region": "NCR",
-				"role": "professional"
-			}
-		},
-		{
-			"id": "1",
-			"type": "workPortfolio",
-			"attributes": {
-				"professionalId": 1,
-				"title": "Work Portfolio Title",
-				"details": "Work Portfolio Details"
-			}
-		},
-		{
-			"id": "1",
-			"type": "service",
-			"attributes": {
-				"professionalId": 1,
-				"title": "Service Title",
-				"details": "Srrvice Details",
-				"minPrice": 1.0,
-				"maxPrice": 10.0
-			}
-		},
-		{
-			"id": "1",
-			"type": "review",
-			"attributes": {
-				"rating": 3,
-				"body": "New text"
-			},
-			"relationships": {
-				"professional": {
-					"data": {
-						"id": "1",
-						"type": "professional"
-					}
-				},
-				"client": {
-					"data": {
-						"id": "1",
-						"type": "client"
-					}
-				}
-			}
-		},
-		{
-			"id": "2",
-			"type": "review",
-			"attributes": {
-				"rating": 5,
-				"body": "New review"
-			},
-			"relationships": {
-				"professional": {
-					"data": {
-						"id": "1",
-						"type": "professional"
-					}
-				},
-				"client": {
-					"data": {
-						"id": "1",
-						"type": "client"
-					}
-				}
-			}
-		},
-		{
-			"id": "3",
-			"type": "review",
-			"attributes": {
-				"rating": 5,
-				"body": "New review"
-			},
-			"relationships": {
-				"professional": {
-					"data": {
-						"id": "1",
-						"type": "professional"
-					}
-				},
-				"client": {
-					"data": {
-						"id": "1",
-						"type": "client"
-					}
-				}
-			}
-		}
-	]
-}
+```bash
+	git push heroku-staging
 ```
 
-### _Get /professional/{:id}_
+Go to the Heroku Dashboard and [promote the app to production](https://devcenter.heroku.com/articles/pipelines) or use Heroku CLI:
 
-**Request**
-
-Headers:
-
-- Authorization
-  - _Authorization token from login response headers_
-
-Params:
-
-- :id
-  - _ID of professional_
-
-**Sample Response**
-
-```json
-{
-	"data": {
-		"id": "1",
-		"type": "professional",
-		"attributes": {
-			"field": "Programmer",
-			"licenseNumber": "0012345",
-			"officeAddress": null,
-			"headline": null
-		},
-		"relationships": {
-			"user": {
-				"data": {
-					"id": "2",
-					"type": "personalDetails"
-				}
-			},
-			"workPortfolios": {
-				"data": [
-					{
-						"id": "1",
-						"type": "workPortfolio"
-					}
-				]
-			},
-			"services": {
-				"data": [
-					{
-						"id": "1",
-						"type": "service"
-					}
-				]
-			},
-			"reviews": {
-				"data": [
-					{
-						"id": "1",
-						"type": "review"
-					},
-					{
-						"id": "2",
-						"type": "review"
-					},
-					{
-						"id": "3",
-						"type": "review"
-					}
-				]
-			}
-		}
-	},
-	"included": [
-		{
-			"id": "2",
-			"type": "personalDetails",
-			"attributes": {
-				"email": "test@email.com",
-				"firstName": "John",
-				"lastName": "Lloyd",
-				"contactNumber": "9151234567",
-				"city": "Manila",
-				"region": "NCR",
-				"role": "professional"
-			},
-			"relationships": {
-				"professional": {
-					"data": {
-						"id": "1",
-						"type": "professional"
-					}
-				}
-			}
-		},
-		{
-			"id": "1",
-			"type": "workPortfolio",
-			"attributes": {
-				"professionalId": 1,
-				"title": "Work Portfolio Title",
-				"details": "Work Portfolio Details"
-			}
-		},
-		{
-			"id": "1",
-			"type": "service",
-			"attributes": {
-				"professionalId": 1,
-				"title": "Service Title",
-				"details": "Srrvice Details",
-				"minPrice": 1.0,
-				"maxPrice": 10.0
-			}
-		},
-		{
-			"id": "1",
-			"type": "review",
-			"attributes": {
-				"rating": 3,
-				"body": "New text"
-			},
-			"relationships": {
-				"professional": {
-					"data": {
-						"id": "1",
-						"type": "professional"
-					}
-				},
-				"client": {
-					"data": {
-						"id": "1",
-						"type": "client"
-					}
-				}
-			}
-		},
-		{
-			"id": "2",
-			"type": "review",
-			"attributes": {
-				"rating": 5,
-				"body": "New review"
-			},
-			"relationships": {
-				"professional": {
-					"data": {
-						"id": "1",
-						"type": "professional"
-					}
-				},
-				"client": {
-					"data": {
-						"id": "1",
-						"type": "client"
-					}
-				}
-			}
-		},
-		{
-			"id": "3",
-			"type": "review",
-			"attributes": {
-				"rating": 5,
-				"body": "New review"
-			},
-			"relationships": {
-				"professional": {
-					"data": {
-						"id": "1",
-						"type": "professional"
-					}
-				},
-				"client": {
-					"data": {
-						"id": "1",
-						"type": "client"
-					}
-				}
-			}
-		}
-	]
-}
+```bash
+	heroku pipelines:promote -a project-staging
 ```
 
-### _Post /professionals_
+### Directly to production (not recommended)
 
-Create professional field details for a user with role 'professional'
+Push to Heroku production remote:
 
-**Request**
+```bash
+	git push heroku
+```
 
-Headers:
+## Environments
 
-- Authorization
-  - _Authorization token from login response headers_
+API Endpoints documentation: https://app.swaggerhub.com/apis/gdperalta924/OPPA/1
 
-Body:
+API Base URL: https://professional-platform-api.herokuapp.com/
 
-- user_id
-  - ID of user
+Frontend repository: https://github.com/dwghdev/online-platform-for-professionals-frontend
+
+Deployed app: https://online-platform-for-professionals-frontend.vercel.app/
+
+Philippines Location API: https://ph-locations-api.buonzz.com/docs/
+
+Calendly API: https://developer.calendly.com/api-docs/ZG9jOjQ1Mg-calendly-developer
+
+## Authors
+* Godfrey Peralta
+* Dale Walter
+* Jerick Borela
