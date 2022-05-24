@@ -23,17 +23,17 @@ RSpec.describe '/bookings', type: :request do
       allow(Time).to receive(:now).and_return Time.new(2022, 5, 19)
       get bookings_url(status: 'active'), headers: valid_headers, as: :json
 
-      event = response.parsed_body
+      data = response.parsed_body['data']
+
       expect(response).to be_successful
-      expect(event).to_not be_empty
-      expect(event.first).to include('links', 'data')
+      expect(data).to_not be_empty
 
-      data = event.first['data'].first
-      expect(data).to include('id' => 'ZZZZZZZZZZ')
-      expect(data).to include('type' => 'active_events')
-      expect(data).to include('attributes')
+      event = data.first
+      expect(event).to include('id' => 'ZZZZZZZZZZ')
+      expect(event).to include('type' => 'active_events')
+      expect(event).to include('attributes')
 
-      attributes = data['attributes']
+      attributes = event['attributes']
       expect(attributes).to include('uri' => 'https://api.calendly.com/scheduled_events/ZZZZZZZZZZ',
                                     'name' => '30 Minute Meeting',
                                     'status' => 'active')

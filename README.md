@@ -96,8 +96,10 @@ Push to Heroku production remote:
 	git push heroku
 ```
 
-## Environments
+## ERD
+	![ERD](FILE://ERD.png)
 
+## Environments
 API Endpoints documentation: https://app.swaggerhub.com/apis/gdperalta924/OPPA/1
 
 API Base URL: https://professional-platform-api.herokuapp.com/
@@ -112,5 +114,5 @@ Calendly API: https://developer.calendly.com/api-docs/ZG9jOjQ1Mg-calendly-develo
 
 ## Authors
 * Godfrey Peralta
-* Dale Walter
+* Dale Walter  
 * Jerick Borela

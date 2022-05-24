@@ -65,10 +65,6 @@ RSpec.configure do |config|
   config.before(:suite) do
     Rails.application.load_seed # loading seeds
   end
-  config.before(:suite) do
-    Rails.application.load_seed # loading seeds
-  end
-
   # Disable net connection during tests
   WebMock.disable_net_connect!(allow_localhost: true)
 
@@ -128,7 +124,7 @@ RSpec.configure do |config|
     }', headers: {})
 
     # Calendly::Client.events
-    stub_request(:get, 'https://api.calendly.com/scheduled_events?count=5&invitee_email=client@email.com&min_start_time=2022-05-19%2000:00:00%20%2B0800&status=active&user=https://api.calendly.com/users/HHHHHHHHHH')
+    stub_request(:get, 'https://api.calendly.com/scheduled_events?count=30&invitee_email=client@email.com&min_start_time=2022-05-19%2000:00:00%20%2B0800&status=active&user=https://api.calendly.com/users/HHHHHHHHHH')
       .with(
         headers: {
           'Accept' => '*/*',
@@ -323,37 +319,40 @@ RSpec.configure do |config|
         "message": "The server could not find the requested resource."
       }', headers: {})
 
-      stub_request(:get, "https://ph-locations-api.buonzz.com/v1/cities").
-         with(
-           headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Content-Type'=>'application/json',
-          'Host'=>'ph-locations-api.buonzz.com',
-          'User-Agent'=>'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
-           }).
-         to_return(status: 200, body: '{"id":"175101","name":"ABRA DE ILOG","region_code":"17","province_code":"1751","href":"http://127.0.0.1:3344/v1/cities/175101"}', headers: {})
+    stub_request(:get, 'https://ph-locations-api.buonzz.com/v1/cities')
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/json',
+          'Host' => 'ph-locations-api.buonzz.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: 200, body: '{"id":"175101","name":"ABRA DE ILOG","region_code":"17","province_code":"1751","href":"http://127.0.0.1:3344/v1/cities/175101"}', headers: {})
 
-      stub_request(:get, "https://ph-locations-api.buonzz.com/v1/cities?page=2").
-         with(
-           headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Content-Type'=>'application/json',
-          'Host'=>'ph-locations-api.buonzz.com',
-          'User-Agent'=>'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
-           }).
-         to_return(status: 200, body: '{"id":"175101","name":"ABRA DE ILOG","region_code":"17","province_code":"1751","href":"http://127.0.0.1:3344/v1/cities/175101"}', headers: {})
+    stub_request(:get, 'https://ph-locations-api.buonzz.com/v1/cities?page=2')
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/json',
+          'Host' => 'ph-locations-api.buonzz.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: 200, body: '{"id":"175101","name":"ABRA DE ILOG","region_code":"17","province_code":"1751","href":"http://127.0.0.1:3344/v1/cities/175101"}', headers: {})
 
-      stub_request(:get, "https://ph-locations-api.buonzz.com/v1/regions").
-         with(
-           headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Content-Type'=>'application/json',
-          'Host'=>'ph-locations-api.buonzz.com',
-          'User-Agent'=>'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
-           }).
-         to_return(status: 200, body: '{"id":"15","name":"AUTONOMOUS REGION IN MUSLIM MINDANAO (ARMM)","href":"http://127.0.0.1:3344/v1/regions/15"}', headers: {})
+    stub_request(:get, 'https://ph-locations-api.buonzz.com/v1/regions')
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/json',
+          'Host' => 'ph-locations-api.buonzz.com',
+          'User-Agent' => 'rest-client/2.1.0 (linux x86_64) ruby/3.0.3p157'
+        }
+      )
+      .to_return(status: 200, body: '{"id":"15","name":"AUTONOMOUS REGION IN MUSLIM MINDANAO (ARMM)","href":"http://127.0.0.1:3344/v1/regions/15"}', headers: {})
   end
 end

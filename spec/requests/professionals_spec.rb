@@ -35,7 +35,7 @@ RSpec.describe '/professionals', type: :request do
       expect(response).to be_successful
       expect(data).to include('id')
       expect(data).to include('attributes')
-      expect(attributes).to include('field' => 'Electrical Engineer',
+      expect(attributes).to include('field' => 'Electronics Engineer',
                                     'licenseNumber' => '0012345',
                                     'headline' => 'MyHeadline',
                                     'officeAddress' => 'Office Address')
@@ -52,7 +52,7 @@ RSpec.describe '/professionals', type: :request do
       { 'Accept': 'application/json', 'Authorization': response.headers['Authorization'] }
     end
     let(:new_valid_attributes) do
-      { user_id: user.id, field: 'Programmer', license_number: '0098765', headline: 'New Headline',
+      { user_id: user.id, field: 'Architect', license_number: '0098765', headline: 'New Headline',
         office_address: 'New Address' }
     end
 
@@ -76,7 +76,7 @@ RSpec.describe '/professionals', type: :request do
         expect(response).to be_successful
         expect(data).to include('id')
         expect(data).to include('attributes')
-        expect(attributes).to include('field' => 'Programmer',
+        expect(attributes).to include('field' => 'Architect',
                                       'licenseNumber' => '0098765',
                                       'headline' => 'New Headline',
                                       'officeAddress' => 'New Address')

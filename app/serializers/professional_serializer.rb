@@ -13,7 +13,8 @@ class ProfessionalSerializer
 
   meta do |professional|
     {
-      averageRating: professional.average_rating
+      averageRating: professional.average_rating,
+      name: professional.full_name
     }
   end
 end
