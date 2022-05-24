@@ -5,8 +5,12 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+<<<<<<< HEAD
 # if ENV['fields']
 
+=======
+if ENV['fields']
+>>>>>>> ecec3462a3cf9353ce31e895f4c4781cf74fe261
   Field.create([
                  { name: 'Aeronautical Engineer' },
                  { name: 'Air Conditioning & Refrigeration Specialist' },

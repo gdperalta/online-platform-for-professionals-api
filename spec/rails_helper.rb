@@ -65,7 +65,14 @@ RSpec.configure do |config|
   config.before(:suite) do
     Rails.application.load_seed # loading seeds
 
+<<<<<<< HEAD
   end
+=======
+  config.before(:suite) do
+    Rails.application.load_seed # loading seeds
+  end
+
+>>>>>>> ecec3462a3cf9353ce31e895f4c4781cf74fe261
   # Disable net connection during tests
   WebMock.disable_net_connect!(allow_localhost: true)
 

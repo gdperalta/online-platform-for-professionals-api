@@ -12,9 +12,13 @@ class Professional < ApplicationRecord
   validates :user_id, uniqueness: true
   validates :license_number, presence: true, uniqueness: true, length: { is: 7 }
 <<<<<<< HEAD
+<<<<<<< HEAD
   validates :field, presence: true, inclusion: {in: Field.pluck(:name),message: '%<value>s is not a valid field'}
 =======
   # validates :name, presence: true, inclusion: { in: %w[:fields_names(ENV_fields)] }
+=======
+  validates :field, presence: true, inclusion: { in: Field.pluck(:name), message: '%<value>s is not a valid field' }
+>>>>>>> ecec3462a3cf9353ce31e895f4c4781cf74fe261
 
   def full_name
     "#{user.first_name} #{user.last_name}"

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :professional do
     id { 1 }
-    field { 'HBRL' }
+    field { 'Electronics Engineer' }
     license_number { '0012345' }
     office_address { 'Office Address' }
     headline { 'MyHeadline' }
