@@ -49,7 +49,7 @@ RSpec.describe Professional, type: :model do
       end
 
       it 'is invalid if is not in the list of fields' do
-        professional.field = 'invalid field'
+        professional.field = 'OddJobs'
         expect(professional).to_not be_valid
         expect(professional.errors.to_hash.keys).to include(:field)
         expect(professional.errors[:field]).to include('OddJobs is not a valid field')
