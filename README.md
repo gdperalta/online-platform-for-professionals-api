@@ -97,7 +97,7 @@ Push to Heroku production remote:
 ```
 
 ## ERD
-	![ERD](FILE://ERD.png)
+	<img title="erd" alt = "ERD" src = "./ERD.png">
 
 ## Environments
 API Endpoints documentation: https://app.swaggerhub.com/apis/gdperalta924/OPPA/1
