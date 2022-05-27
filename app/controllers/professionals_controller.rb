@@ -2,14 +2,19 @@ class ProfessionalsController < ApplicationController
   before_action :set_professional, only: %i[show update destroy]
 
   def index
-    @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
-                                                       :bookings, :subscribers, :clientele).all)
+    # @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
+    #                                                    :bookings, :subscribers, :clientele).all)
+
+    @pagy, @professionals = pagy_array(Professional.includes(:user, :work_portfolios, :services, :calendly_token,
+                                                             :reviews, :bookings, :subscribers, :clientele)
+                                                            .all.sort_by(&:average_rating).reverse!)
+
     render json: ProfessionalSerializer.new(@professionals, pagination_links)
   end
 
   def search
-    @pagy, @professionals = pagy(Professional.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
-                                                       :bookings, :subscribers, :clientele).ransack(params[:q]).result)
+    @pagy, @professionals = pagy_array(Professional.ransack(params[:q]).result.includes(:user, :work_portfolios, :services, :calendly_token, :reviews,
+                                                                                        :bookings, :subscribers, :clientele).sort_by(&:average_rating).reverse!)
 
     render json: ProfessionalSerializer.new(@professionals, pagination_links)
   end

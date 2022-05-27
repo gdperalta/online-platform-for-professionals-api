@@ -18,7 +18,7 @@ class Professional < ApplicationRecord
   end
 
   def average_rating
-    reviews.average(:rating)
+    reviews.average(:rating) || 0
   end
 
   # TODO: For refactoring in user level
