@@ -4,7 +4,7 @@
 
 ## **About the project**
 
-API used by an application where clients can search and book appointments with professionals.
+API used for the project in Avion schoool where clients can search and book appointments with professionals.
 
 ## **Key Features**
 
@@ -16,13 +16,33 @@ API used by an application where clients can search and book appointments with p
 - Subscribe to a professional to be able to book an appointment with them. (Subscription required in order to track the bookings from calendly related to the app)
 - Add a review after a confirmed appointment with the professional
 
+## **Other Features**
+
+- Sends a confirmation email to confirm the email address of the user
+- Allows an admin to approve a user before they can start using the app
+- Sends an email to the trader when they are approved.
+
 ## **ERD**
 
 ![ERD][erd_pic]
 
+## **Endpoints and Documentation**
+
+Visit [OPPA Documentation](https://app.swaggerhub.com/apis-docs/gdperalta924/OPPA/1) to see all the endpoints of the application.
+
+## **Live API**
+
+The live API can be accessed using the following base URL
+
+> https://professional-platform-api.herokuapp.com
+
 ## **Getting Started**
 
+### **Prerequisites**
+
 The setups steps expect the Builds listed above to be installed on the system.
+
+### **Instructions**
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
@@ -62,64 +82,31 @@ Run the following command to run the tests.
 rspec --format documentation
 ```
 
-## **Live API**
-
-The live API can be accessed using the following base URL
-
-> https://professional-platform-api.herokuapp.com
-
-## **Endpoints and Documentation**
-
-Visit [OPPA Documentation](https://app.swaggerhub.com/apis-docs/gdperalta924/OPPA/1) to see all the endpoints of the application.
-
 ## **Environments**
 
-Frontend Repository: https://github.com/dwghdev/online-platform-for-professionals-frontend
+[Frontend Repository](https://github.com/dwghdev/online-platform-for-professionals-frontend)
 
-Deployed Frontend Repository: https://online-platform-for-professionals-frontend.vercel.app/
+[Deployed Frontend App](https://online-platform-for-professionals-frontend.vercel.app)
 
-Philippines Location API: https://ph-locations-api.buonzz.com/docs/
+[Philippines Location API](https://ph-locations-api.buonzz.com/docs)
 
-Calendly API: https://developer.calendly.com/api-docs/ZG9jOjQ1Mg-calendly-developer
+[Calendly API](https://developer.calendly.com/api-docs/ZG9jOjQ1Mg-calendly-developer)
 
 ## **System dependencies**
 
 ### **Gems**
 
-Handling Cross-Origin Resource Sharing (CORS)
-
-- rack-cors 1.1.1
-
-For user authentication
-
-- devise 4.8.1
-- devise-jwt 0.9.0
-
-For json api format
-
-- jsonapi-serializer 2.2.0
-
-For pagination
-
-- pagy 5.10
-
-For user authorization
-
-- pundit 2.2.0
-
-For searches
-
-- ransack 3.0.1
-
-For request to external APIs
-
-- rest-client 2.1.0
-
-For tests and development
-
-- rspec-rails 5.1.1'
-- factory_bot_rails 6.2.0'
-- webmock 3.14.0'
+- Rack-cors 1.1.1
+- Devise 4.8.1
+- Devise-jwt 0.9.0
+- Jsonapi-serializer 2.2.0
+- Pagy 5.10
+- Pundit 2.2.0
+- Ransack 3.0.1
+- Rest-client 2.1.0
+- Rspec-rails 5.1.1'
+- Factory_bot_rails 6.2.0'
+- Webmock 3.14.0'
 
 ## **Authors**
 
