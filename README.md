@@ -59,7 +59,7 @@ Used [RSpec](https://rspec.info) to test the request and models of the app.
 Run the following command to run the tests.
 
 ```bash
-	rspec --format documentation
+rspec --format documentation
 ```
 
 ## **Live API**
